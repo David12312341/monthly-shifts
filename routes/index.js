@@ -13,7 +13,7 @@ router.get('/get-month', function (req, res) {
 });
 
 router.post("/save-user-preferences", function(req, res) {
-  MongoClient.connect(mongodbUri, function(err, db) {
+  mongoClient.connect(mongodbUri, function(err, db) {
     db.collection('user-preferences').insertOne(req.body);
   db.close();
 });

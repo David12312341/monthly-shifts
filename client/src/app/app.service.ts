@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ShiftsSelection } from "app/shifts-selection";
-import { Jsonp, URLSearchParams, Http } from "@angular/http";
+import { Jsonp, URLSearchParams, Http, Headers } from "@angular/http";
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -25,6 +25,7 @@ export class AppService {
     }
 
     saveUserPreferences(preferences: any) {
-        this.http.post('save-user-preferences', preferences);
+        let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+        this.http.post('save-user-preferences', JSON.stringify(preferences), {headers: headers}).subscribe(r=>{});
     }
 }
