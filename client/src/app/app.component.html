@@ -1,0 +1,24 @@
+<form>
+  <div class="input-field col s6">
+    <input type="text" id="name" placeholder="שם" class="validate">
+  </div>
+  <table class="highlight">
+    <thead>
+      <tr>
+        <th *ngFor="let i of ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי']">{{i}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let week of month">
+        <td *ngFor="let day of week">
+          <h4>{{day.date}}</h4>
+          <div *ngFor="let shift of day.shifts" class="input-field">
+            <input type="checkbox" [id]="day.date + '-' + shift" class="filled-in" />
+            <label [for]="day.date + '-' + shift">{{shift}}</label>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button id="submit" (click)="saveUserPreference()" class="waves-effect waves-light btn">אישור</button>
+</form>
