@@ -12,11 +12,25 @@ router.get('/get-month', function (req, res) {
   res.json(genrateMonthJson(req.query.year, req.query.month));
 });
 
-router.post("/save-user-preferences", function(req, res) {
-  mongoClient.connect(mongodbUri, function(err, db) {
-    db.collection('user-preferences').insertOne(req.body);
-  db.close();
+router.get('/new', function (req, res) {
+  res.json(genrateMonthJson(req.query.year, req.query.month));
 });
+
+router.post("/save-user-preferences", function (req, res) {
+  mongoClient.connect(mongodbUri, function (err, db) {
+    db.collection('user-preferences').insertOne(req.body);
+    db.close();
+  });
+});
+
+router.get("load-user-preferences", (req, res) => {
+  mongoClient.connect(mongodbUri, (err, db) => {
+    let name = db.query.name ? db.query.name : "__unknown";
+    db.collection('user-preferences').findOne({ name: name }, (err, result) => {
+      res.json(result);
+      db.close();
+    });
+  });
 });
 
 function genrateMonthJson(year, month) {

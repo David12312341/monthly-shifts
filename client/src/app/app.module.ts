@@ -5,10 +5,16 @@ import { HttpModule, JsonpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { AppService } from "app/app.service";
+import { PollComponent } from './poll/poll.component';
+import { MemberComponent } from './member/member.component';
+import { ManagerComponent } from './manager/manager.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PollComponent,
+    MemberComponent,
+    ManagerComponent
   ],
   imports: [
     BrowserModule,
