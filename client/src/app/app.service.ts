@@ -16,7 +16,7 @@ export class AppService {
         params.set("year", year.toString());
         params.set("month", month.toString());
         return this.http
-            .get('get-month', { search: params })
+            .get('dal/get-month', { search: params })
             .map(res => res.json())
             .catch((err: any) => {
                 console.error("HTTP get failed");
@@ -26,14 +26,14 @@ export class AppService {
 
     saveUserPreferences(preferences: any) {
         let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
-        this.http.post('save-user-preferences', JSON.stringify(preferences), { headers: headers }).subscribe(r => { });
+        this.http.post('dal/save-user-preferences', JSON.stringify(preferences), { headers: headers }).subscribe(r => { });
     }
 
     loadUserPreferences(name: string) {
         let params = new URLSearchParams();
         params.set("name", name);
         return this.http
-            .get('get-month', { search: params })
+            .get('dal/get-month', { search: params })
             .map(res => res.json())
             .catch((err: any) => {
                 console.error("HTTP get failed");

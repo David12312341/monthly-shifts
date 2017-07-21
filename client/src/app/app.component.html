@@ -1,4 +1,11 @@
-<button (click)="isManager = !isManager" style="float:left" class="waves-effect waves-light btn">ניהול</button>
-<h2 class="blue-text text-darken-2">סידור משמרות</h2>
-<app-manager *ngIf="isManager"></app-manager>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo right">סידור משמרות</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li *ngFor="let item of navButtons"><a href="javascript:void(0)" (click)="item.action()">{{item.caption}}</a></li>
+        </ul>
+    </div>
+</nav>
+<!--<button (click)="isManager = !isManager" style="float:left" class="waves-effect waves-light btn">ניהול</button>-->
+<app-manager *ngIf="isManager" [screen]="screen"></app-manager>
 <app-member *ngIf="!isManager"></app-member>

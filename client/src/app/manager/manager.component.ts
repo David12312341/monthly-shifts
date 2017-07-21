@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Injectable } from '@angular/core';
+import { ScreenType } from "app/manager/screen-type";
 
 @Component({
   selector: 'app-manager',
@@ -6,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./manager.component.css']
 })
 export class ManagerComponent implements OnInit {
-
+  
+  @Input() screen: ScreenType;
+  screenType = ScreenType;
+  
   constructor() { }
 
   ngOnInit() {

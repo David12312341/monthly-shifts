@@ -1,16 +1,13 @@
-td {
-    text-align: right;
-    vertical-align: top;
-}
-
-#name {
-    width: 20%;
-}
-
 div.container {
     margin-bottom: 32px;
 }
 
-input.filled-in {
-    left:0!important;
+#loading {
+    position:absolute;
+    top:50%;
+    right:50%
+}
+
+body {
+    background-color: #fcfcfc;
 }

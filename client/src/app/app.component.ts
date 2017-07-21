@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { AppService } from "app/app.service";
+import { ScreenType } from "app/manager/screen-type";
 
 @Component({
   selector: 'app-root',
@@ -10,10 +11,48 @@ import { AppService } from "app/app.service";
 })
 export class AppComponent implements OnInit {
 
-  isManager: boolean;
+  private _isManager: boolean;
+
+  screen: ScreenType;
+
+  set isManager(value: boolean) {
+    if (value) this.setManagerNavButtons();
+    else this.setUserNavButtons();
+    this._isManager = value;
+  }
+
+  get isManager(): boolean {
+    return this._isManager;
+  }
+
+  navButtons: object[];
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.setUserNavButtons();
+  }
+
+  setUserNavButtons(): void {
+    this.navButtons = [
+      {
+        caption: "ניהול",
+        action: () => this.isManager = true
+      }
+    ]
+  }
+
+  setManagerNavButtons(): void {
+    this.navButtons = [
+      {
+        caption: "חזרה",
+        action: () => this.isManager = false
+      },
+      {
+        caption: "סקר חדש",
+        action: () => this.screen = ScreenType.NewPoll
+      }
+    ]
+  }
 
 }

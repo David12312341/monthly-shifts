@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var dal = require('./routes/dal');
 
 var app = express();
 
@@ -21,9 +22,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client/node_modules')));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/', index);
+app.use('/dal', dal);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

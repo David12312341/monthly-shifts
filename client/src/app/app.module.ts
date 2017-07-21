@@ -8,13 +8,15 @@ import { AppService } from "app/app.service";
 import { PollComponent } from './poll/poll.component';
 import { MemberComponent } from './member/member.component';
 import { ManagerComponent } from './manager/manager.component';
+import { NewPollFormComponent } from './manager/new-poll-form/new-poll-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PollComponent,
     MemberComponent,
-    ManagerComponent
+    ManagerComponent,
+    NewPollFormComponent
   ],
   imports: [
     BrowserModule,
