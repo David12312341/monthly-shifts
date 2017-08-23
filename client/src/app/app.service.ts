@@ -24,6 +24,21 @@ export class AppService {
             });
     }
 
+    loadPolls(): Observable<any> {
+        return this.http
+            .get('/dal/get-polls')
+            .map(res => res.json())
+            .catch((err: any) => {
+                console.error("HTTP get failed");
+                return Promise.reject(err.message || err)
+            });
+    }
+
+    publishPoll(poll: any) {
+        let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+        this.http.post('dal/publish', JSON.stringify(poll), { headers: headers }).subscribe(r => { });
+    }
+
     saveUserPreferences(preferences: any) {
         let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
         this.http.post('dal/save-user-preferences', JSON.stringify(preferences), { headers: headers }).subscribe(r => { });

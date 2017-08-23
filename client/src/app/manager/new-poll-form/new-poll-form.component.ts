@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MDCSelect } from '@material/select';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { MaterializeDirective } from 'angular2-materialize';
+import { AppService } from "app/app.service";
+import { MaterializeAction } from 'angular2-materialize';
+
+declare var Materialize: any;
 
 @Component({
   selector: 'new-poll-form',
@@ -8,14 +12,41 @@ import { MDCSelect } from '@material/select';
 })
 export class NewPollFormComponent implements OnInit {
 
-  constructor() { }
+  pollName: number;
+  currentYear: number = new Date(Date.now()).getFullYear();
+  currentMonth: number = new Date(Date.now()).getMonth();
+  selectedMonth: number;
+  selectedYear: number;
+  poll: any;
+
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
-    // const select = new MDCSelect(document.querySelector('.mdc-select'));
-    // select.listen('MDCSelect:change', () => {
-    //   alert(`Selected "${select.selectedOptions[0].textContent}" at index ${select.selectedIndex} ` +
-    //     `with value "${select.value}"`);
-    // });
   }
 
+  createPoll() {
+    if (this.selectedMonth && this.selectedYear && this.pollName) {
+      this.appService.getMonth(this.selectedYear, this.selectedMonth)
+        .subscribe(poll => this.poll = poll);
+    }
+  }
+
+  publishPoll(): void {
+    let poll = this.poll;
+    poll.forEach(week => {
+      week.forEach(day => {
+        if (day.shift)
+          day.shifts.filter(shift => {
+            shift.isSelected;
+          });
+      });
+    });
+    this.appService.publishPoll({
+      name: this.pollName,
+      month: this.selectedMonth,
+      year: this.selectedYear,
+      shifts: poll
+    });
+    Materialize.toast("הסקר פורסם בהצלחה!", 4000);
+  }
 }

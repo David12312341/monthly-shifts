@@ -1,18 +1,31 @@
 <table class="highlight">
-    <thead>
-      <tr>
-        <th *ngFor="let i of ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי']">{{i}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let week of month">
-        <td *ngFor="let day of week">
-          <h4>{{day.date}}</h4>
-          <div *ngFor="let shift of day.shifts" class="input-field">
-            <input type="checkbox" [id]="day.date + '-' + shift" class="filled-in" />
-            <label [for]="day.date + '-' + shift">{{shift}}</label>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th *ngFor="let i of ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי']">{{i}}</th>
+    </tr>
+  </thead>
+  <tbody dir="ltr">
+    <tr *ngFor="let week of poll">
+      <td *ngFor="let day of week" style="width:16.667%">
+        <h4>{{day.date}}</h4>
+        <div *ngFor="let shift of day.shifts" class="input-field tooltipped" materialize="tooltip" [materializeParams]="[{'tooltip':shift.remark, 'delay': shift.remark ? 350 : 100000000000}]">
+          <a *ngIf="managerMode" href="#modal1" (click)="selectShiftForRemark(shift)"><i class="material-icons">comment</i></a>
+          <input type="checkbox" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" class="filled-in" />
+          <label [for]="day.date + '-' + shift.time">{{shift.time}}</label>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div materialize="modal" id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>הכנס הערה</h4>
+    <div class="input-field col s12 m12 l12 <xl12></xl12>">
+      <input type="text" id="remark" [(ngModel)]="selectedRemark" name="remark" class="validate">
+      <label for="remark">תוכן</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect btn-flat" style="float:left;" (click)="selectedShift.remark = selectedRemark">אישור</a>
+  </div>
+</div>

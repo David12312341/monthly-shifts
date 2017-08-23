@@ -1,26 +1,30 @@
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-<form dir="rtl">
-   <div class="input-field col s12">
-    <select>
-      <option value="" disabled selected>חודש</option>
-      <option *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]">{{item}}</option>
-    </select>
-   </div>
-  <!-- <div class="mdc-select" style="width:364px;">
-    <span class="mdc-select__selected-text">חודש</span>
-    <div class="mdc-simple-menu mdc-select__menu">
-      <ul class="mdc-list mdc-simple-menu__items">
-        <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
-          חודש
-        </li>
-        <li *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" class="mdc-list-item" role="option" [id]="item" tabindex="0">
-          {{item}}
-        </li>
-      </ul>
+<form>
+  <div class="row">
+    <div class="input-field col s3 m3 l3 xl3">
+      <input type="text" id="poll-name" [(ngModel)]="pollName" name="unknown" class="validate">
+      <label for="poll-name">שם סקר</label>
     </div>
-  </div> -->
-
-  <!--<app-poll></app-poll>-->
-
-  <!--<button id="submit" (click)="saveUserPreference()" class="waves-effect waves-light btn">אישור</button>-->
+    <div class="input-field col s3 m3 l3 xl3">
+      <select materialize="material_select" [(ngModel)]="selectedMonth" name="month">
+        <option value="" selected disabled>בחירה</option>
+        <option *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="item - 1">{{item}}</option>
+      </select>
+      <label>חודש</label>
+    </div>
+    <div class="input-field col s3 m3 l3 xl3">
+      <select materialize="material_select" [(ngModel)]="selectedYear" name="year">
+        <option value="" selected disabled>בחירה</option>
+        <option [value]="currentYear">{{currentYear}}</option>
+        <option [value]="currentYear + 1">{{currentYear + 1}}</option>
+      </select>
+      <label>שנה</label>
+    </div>
+    <div class="input-field col s3 m3 l3 xl3">
+      <button id="submit" (click)="createPoll()" class="waves-effect waves-light btn">יאללה!</button>
+    </div>
+  </div>
+  <app-poll *ngIf="poll" [poll]="poll" [managerMode]="true"></app-poll>
+  <div *ngIf="poll" class="input-field col s3 m3 l3 xl3">
+    <button id="publish" (click)="publishPoll()" class="waves-effect waves-light btn">פרסום</button>
+  </div>
 </form>

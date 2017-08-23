@@ -1,9 +1,18 @@
-<form>
-  <div class="input-field">
-    <input type="text" id="name" [(ngModel)]="name" name="unknown" class="validate">
-    <label for="name">שם מלא</label>
+<form *ngIf="polls != null && polls.length != 0">
+  <div class="row">
+    <div class="input-field col s3 m3 l3 xl3">
+      <select materialize="material_select" [(ngModel)]="selectedPollId" name="poll_selection">
+          <option *ngFor="let poll of polls" [value]="poll._id">{{poll.name}} {{getMonthView(poll.month)}}/{{poll.year}}</option>
+        </select>
+      <label>סקר</label>
+    </div>
   </div>
-  <app-poll></app-poll>
-  
-  <button id="submit" (click)="saveUserPreference()" class="waves-effect waves-light btn">אישור</button>
+  <div *ngIf="selectedPoll != null">
+    <div class="input-field col s3 m3 l3 xl3" style="right:0;">
+      <input type="text" id="fullname" [(ngModel)]="name" name="unknown" class="validate">
+      <label for="fullname" style="right:0;">שם מלא</label>
+    </div>
+    <app-poll [poll]="selectedPoll.shifts"></app-poll>
+    <button id="submit" (click)="saveUserPreference()" class="waves-effect waves-light btn">אישור</button>
+  </div>
 </form>

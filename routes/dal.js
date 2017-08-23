@@ -11,6 +11,22 @@ router.get('/new', function (req, res) {
   res.json(genrateMonthJson(req.query.year, req.query.month));
 });
 
+router.get('/get-polls', (req, res) => {
+  mongoClient.connect(mongodbUri, (err, db) => {
+    db.collection('polls').find()
+    .toArray((err, docs) => {
+      res.json(docs);
+    })
+  });
+});
+
+router.post('/publish', function (req, res) {
+  mongoClient.connect(mongodbUri, function (err, db) {
+    db.collection('polls').insertOne(req.body);
+    db.close();
+  });
+});
+
 router.post("/save-user-preferences", function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
     db.collection('user-preferences').insertOne(req.body);
@@ -54,12 +70,12 @@ function genrateMonthJson(year, month) {
 
 function getShiftsByWeekday(weekday) {
   switch (weekday) {
-    case 0: return ["19:00-22:00"];
-    case 1: return ["16:00-19:00", "19:00-22:00"];
-    case 2: return ["16:00-19:00", "19:00-22:00"];
-    case 3: return ["16:00-19:00", "19:00-22:00"];
-    case 4: return ["13:00-16:00", "16:00-19:00", "19:00-22:00", "21:00-00:00"];
-    case 5: return ["08:00-11:00", "11:00-14:00", "13:00-16:00"];
+    case 0: return [{ time: "19:00-22:00" }];
+    case 1: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
+    case 2: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
+    case 3: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
+    case 4: return [{ time: "13:00-16:00" }, { time: "16:00-19:00" }, { time: "19:00-22:00" }, { time: "21:00-00:00" }];
+    case 5: return [{ time: "08:00-11:00" }, { time: "11:00-14:00" }, { time: "13:00-16:00" }];
     default: return [];
   }
 }

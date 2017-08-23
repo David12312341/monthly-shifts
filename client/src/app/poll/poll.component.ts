@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { AppService } from "app/app.service";
 
 @Component({
@@ -8,14 +8,19 @@ import { AppService } from "app/app.service";
 })
 export class PollComponent implements OnInit {
 
-  @Input() public month: any;
+  selectedShift: any;
+  selectedRemark: string;
+  @Input() managerMode: boolean;
+  @Input() poll: any;
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService) {
+  }
 
   ngOnInit() {
-    this.appService.getMonth(2017, 5)
-      .subscribe((month) => {
-        this.month = month;
-      });
+  }
+  
+  selectShiftForRemark(shift: any): void {
+    this.selectedShift = shift;
+    this.selectedRemark = shift.remark;
   }
 }

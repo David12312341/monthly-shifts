@@ -11,3 +11,22 @@ div.container {
 body {
     background-color: #fcfcfc;
 }
+
+.caret {
+    right: auto !important;
+    left: 0;
+}
+
+.dropdown-content {
+    padding-inline-start: 0;
+}
+
+.select-wrapper {
+    margin-inline-start: -12px;
+    width:100%;
+}
+
+li span, form div div, form div div label {
+    float: right !important;
+    right: 0.75rem;
+}
