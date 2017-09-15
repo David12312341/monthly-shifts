@@ -35,7 +35,7 @@ export class MemberComponent implements OnInit {
   }
 
   saveUserPreference(): void {
-    this.appService.saveUserPreferences({ name: this.name, preferences: this.month });
+    this.appService.saveUserPreferences({ name: this.name, preferences: this.selectedPoll });
   }
 
 }

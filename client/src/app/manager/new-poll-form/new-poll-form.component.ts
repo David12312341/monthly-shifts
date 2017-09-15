@@ -27,7 +27,15 @@ export class NewPollFormComponent implements OnInit {
   createPoll() {
     if (this.selectedMonth && this.selectedYear && this.pollName) {
       this.appService.getMonth(this.selectedYear, this.selectedMonth)
-        .subscribe(poll => this.poll = poll);
+        .subscribe(poll => {
+          poll.forEach(week => {
+            week.forEach(day => {
+              if (!day.shifts) return;
+              day.shifts.push({});
+            });
+          });
+          this.poll = poll;
+        });
     }
   }
 
@@ -35,10 +43,12 @@ export class NewPollFormComponent implements OnInit {
     let poll = this.poll;
     poll.forEach(week => {
       week.forEach(day => {
-        if (day.shift)
-          day.shifts.filter(shift => {
-            shift.isSelected;
-          });
+        if (day.shifts) {
+          let badShifts: any[] = day.shifts.filter(shift => !shift.time);
+          badShifts.forEach(shift => {
+            day.shifts.splice(day.shifts.indexOf(shift), 1);
+          })
+        }
       });
     });
     this.appService.publishPoll({

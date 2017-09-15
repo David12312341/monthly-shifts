@@ -20,11 +20,11 @@
       <label>שנה</label>
     </div>
     <div class="input-field col s3 m3 l3 xl3">
-      <button id="submit" (click)="createPoll()" class="waves-effect waves-light btn">יאללה!</button>
+      <button type="button" id="submit" (click)="createPoll()" class="waves-effect waves-light btn">יאללה!</button>
     </div>
   </div>
   <app-poll *ngIf="poll" [poll]="poll" [managerMode]="true"></app-poll>
   <div *ngIf="poll" class="input-field col s3 m3 l3 xl3">
-    <button id="publish" (click)="publishPoll()" class="waves-effect waves-light btn">פרסום</button>
+    <button type="button" id="publish" (click)="publishPoll()" class="waves-effect waves-light btn">פרסום</button>
   </div>
 </form>

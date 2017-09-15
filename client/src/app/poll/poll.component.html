@@ -8,10 +8,15 @@
     <tr *ngFor="let week of poll">
       <td *ngFor="let day of week" style="width:16.667%">
         <h4>{{day.date}}</h4>
-        <div *ngFor="let shift of day.shifts" class="input-field tooltipped" materialize="tooltip" [materializeParams]="[{'tooltip':shift.remark, 'delay': shift.remark ? 350 : 100000000000}]">
-          <a *ngIf="managerMode" href="#modal1" (click)="selectShiftForRemark(shift)"><i class="material-icons">comment</i></a>
-          <input type="checkbox" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" class="filled-in" />
-          <label [for]="day.date + '-' + shift.time">{{shift.time}}</label>
+        <div *ngFor="let shift of day.shifts" class="input-field tooltipped" materialize="tooltip" [materializeParams]="[{'tooltip':shift.remark, 'delay': shift.remark ? 0 : 100000000000}]">
+          <div *ngIf="managerMode">
+            <a href="#modal1" (click)="selectShiftForRemark(shift)" class="poll-shift-button"><i class="material-icons">comment</i></a>
+            <input type="text" [(ngModel)]="shift.time" style="width:70%;" (blur)="checkTextInput(day, shift)" (keyup.enter)="checkTextInput(day, shift)" />
+          </div>
+          <div *ngIf="!managerMode">
+            <input type="checkbox" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" class="filled-in" />
+            <label [for]="day.date + '-' + shift.time">{{shift.time}}</label>
+          </div>
         </div>
       </td>
     </tr>

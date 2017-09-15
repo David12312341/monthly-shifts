@@ -16,11 +16,15 @@ export class PollComponent implements OnInit {
   constructor(private appService: AppService) {
   }
 
-  ngOnInit() {
-  }
-  
+  ngOnInit() { }
+
   selectShiftForRemark(shift: any): void {
     this.selectedShift = shift;
     this.selectedRemark = shift.remark;
+  }
+
+  checkTextInput(day: { shifts: any[] }, shift) {
+    if (shift.time == "") day.shifts.splice(day.shifts.indexOf(shift), 1);
+    if (day.shifts[day.shifts.length - 1].time && day.shifts[day.shifts.length - 1].time != "") day.shifts.push({});
   }
 }
