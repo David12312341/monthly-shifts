@@ -9,7 +9,7 @@
   </div>
   <div *ngIf="selectedPoll != null">
     <div class="input-field col s3 m3 l3 xl3" style="right:0;">
-      <input type="text" id="fullname" [(ngModel)]="name" name="unknown" class="validate">
+      <input type="text" class="autocomplete" materialize="autocomplete" [materializeParams]="[{'data':userNames}]" id="fullname" [(ngModel)]="name" name="unknown" class="validate">
       <label for="fullname" style="right:0;">שם מלא</label>
     </div>
     <app-poll [poll]="selectedPoll.shifts"></app-poll>

@@ -44,6 +44,15 @@ export class AppService {
         this.http.post('dal/save-user-preferences', JSON.stringify(preferences), { headers: headers }).subscribe(r => { });
     }
 
+    loadAllUserPreferences() {
+        return this.http.get('dal/load-user-preferences')
+            .map(res => res.json())
+            .catch((err: any) => {
+                console.error("HTTP get failed");
+                return Promise.reject(err.message || err)
+            });
+    }
+
     loadUserPreferences(name: string) {
         let params = new URLSearchParams();
         params.set("name", name);

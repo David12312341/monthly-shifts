@@ -10,6 +10,8 @@ import { Observable } from "rxjs/Observable";
 })
 export class MemberComponent implements OnInit {
 
+  userNames: any = {};
+  userPreferences: any[];
   name: string;
   month: any;
   polls: any[] = [];
@@ -20,14 +22,15 @@ export class MemberComponent implements OnInit {
   }
 
   constructor(private appService: AppService) {
+    this.loadAllUserPreferences();
     this.appService.loadPolls()
       .subscribe((polls: Observable<any>) => {
         polls.forEach(p => this.polls.push(p));
         if (this.polls.length > 0) this.selectedPoll = this.polls[0];
       });
-  }
-
-  ngOnInit() {
+    }
+    
+    ngOnInit() {
   }
 
   getMonthView(month: string) {
@@ -36,6 +39,13 @@ export class MemberComponent implements OnInit {
 
   saveUserPreference(): void {
     this.appService.saveUserPreferences({ name: this.name, preferences: this.selectedPoll });
+  }
+
+  loadAllUserPreferences(): void {
+    this.appService.loadAllUserPreferences().subscribe(result => {
+      result.forEach(u => this.userNames[u.name] = null);
+      this.userPreferences = result;
+    });
   }
 
 }

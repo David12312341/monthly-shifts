@@ -14,9 +14,9 @@ router.get('/new', function (req, res) {
 router.get('/get-polls', (req, res) => {
   mongoClient.connect(mongodbUri, (err, db) => {
     db.collection('polls').find()
-    .toArray((err, docs) => {
-      res.json(docs);
-    })
+      .toArray((err, docs) => {
+        res.json(docs);
+      })
   });
 });
 
@@ -34,10 +34,10 @@ router.post("/save-user-preferences", function (req, res) {
   });
 });
 
-router.get("load-user-preferences", (req, res) => {
+router.get("/load-user-preferences", (req, res) => {
   mongoClient.connect(mongodbUri, (err, db) => {
-    let name = db.query.name ? db.query.name : "__unknown";
-    db.collection('user-preferences').findOne({ name: name }, (err, result) => {
+    db.collection('user-preferences').find()
+    .toArray((err, result) => {
       res.json(result);
       db.close();
     });
