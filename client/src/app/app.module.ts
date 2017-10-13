@@ -10,6 +10,8 @@ import { PollComponent } from './poll/poll.component';
 import { MemberComponent } from './member/member.component';
 import { ManagerComponent } from './manager/manager.component';
 import { NewPollFormComponent } from './manager/new-poll-form/new-poll-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { NewPollFormComponent } from './manager/new-poll-form/new-poll-form.comp
     FormsModule,
     HttpModule,
     JsonpModule,
-    MaterializeModule
+    MaterializeModule,
+    BrowserAnimationsModule,
+    MatAutocompleteModule
   ],
   exports: [MaterializeModule],
   providers: [AppService],

@@ -29,7 +29,7 @@ router.post('/publish', function (req, res) {
 
 router.post("/save-user-preferences", function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
-    db.collection('user-preferences').insertOne(req.body);
+    db.collection('user-preferences').updateOne({ name: req.body.name}, req.body, {upsert: true});
     db.close();
   });
 });
@@ -37,10 +37,10 @@ router.post("/save-user-preferences", function (req, res) {
 router.get("/load-user-preferences", (req, res) => {
   mongoClient.connect(mongodbUri, (err, db) => {
     db.collection('user-preferences').find()
-    .toArray((err, result) => {
-      res.json(result);
-      db.close();
-    });
+      .toArray((err, result) => {
+        res.json(result);
+        db.close();
+      });
   });
 });
 
