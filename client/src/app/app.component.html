@@ -1,11 +1,9 @@
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo right">סידור משמרות</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li *ngFor="let item of navButtons"><a href="javascript:void(0)" (click)="item.action()">{{item.caption}}</a></li>
-        </ul>
-    </div>
-</nav>
-<!--<button (click)="isManager = !isManager" style="float:left" class="waves-effect waves-light btn">ניהול</button>-->
-<app-manager *ngIf="isManager" [screen]="screen"></app-manager>
-<app-member *ngIf="!isManager"></app-member>
+<mat-toolbar color="primary" class="mat-elevation-z6">
+    <span>סידור משמרות</span>
+    <span class="sapcer"></span>
+    <a *ngFor="let item of navButtons" mat-button href="javascript:void(0)" (click)="item.action()">{{item.caption}}</a>
+</mat-toolbar>
+<div class="container">
+    <app-manager *ngIf="isManager" [screen]="screen"></app-manager>
+    <app-member *ngIf="!isManager"></app-member>
+</div>

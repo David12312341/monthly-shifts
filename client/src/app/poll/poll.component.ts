@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { AppService } from "app/app.service";
+import { MatDialog } from "@angular/material/dialog";
+import { RemarkDialogComponent } from "app/remark-dialog/remark-dialog.component";
 
 @Component({
   selector: 'app-poll',
@@ -13,14 +15,16 @@ export class PollComponent implements OnInit {
   @Input() managerMode: boolean;
   @Input() poll: any;
 
-  constructor(private appService: AppService) {
+  constructor(private appService: AppService, public dialog: MatDialog) {
   }
 
   ngOnInit() { }
 
-  selectShiftForRemark(shift: any): void {
+  openRemarkDialog(shift: any): void {
     this.selectedShift = shift;
     this.selectedRemark = shift.remark;
+    this.dialog.open(RemarkDialogComponent, { width: "250px", direction: "rtl" })
+      .afterClosed().subscribe(result => shift.remark = result);
   }
 
   checkTextInput(day: { shifts: any[] }, shift) {

@@ -1,7 +1,3 @@
-div.container {
-    margin-bottom: 32px;
-}
-
 #loading {
     position:absolute;
     top:50%;
@@ -24,9 +20,4 @@ body {
 .select-wrapper {
     margin-inline-start: -12px;
     width:100%;
-}
-
-li span, form div div, form div div label {
-    float: right !important;
-    right: 0.75rem;
 }

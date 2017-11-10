@@ -1,0 +1,7 @@
+span.sapcer {
+    flex: 1 1 auto;
+}
+div.container {
+    max-width: 940px;
+    margin:auto;
+}

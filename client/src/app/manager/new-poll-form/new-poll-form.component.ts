@@ -1,9 +1,6 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { MaterializeDirective } from 'angular2-materialize';
 import { AppService } from "app/app.service";
-import { MaterializeAction } from 'angular2-materialize';
-
-declare var Materialize: any;
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: 'new-poll-form',
@@ -19,13 +16,13 @@ export class NewPollFormComponent implements OnInit {
   selectedYear: number;
   poll: any;
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
   }
 
   createPoll() {
-    if (this.selectedMonth && this.selectedYear && this.pollName) {
+    if (this.selectedMonth != undefined && this.selectedYear && this.pollName) {
       this.appService.getMonth(this.selectedYear, this.selectedMonth)
         .subscribe(poll => {
           poll.forEach(week => {
@@ -57,6 +54,6 @@ export class NewPollFormComponent implements OnInit {
       year: this.selectedYear,
       shifts: poll
     });
-    Materialize.toast("הסקר פורסם בהצלחה!", 4000);
+    this.snackBar.open("הסקר פורסם בהצלחה!", null, { duration: 4000, direction: "rtl" });
   }
 }

@@ -1,30 +1,24 @@
 <form>
-  <div class="row">
-    <div class="input-field col s3 m3 l3 xl3">
-      <input type="text" id="poll-name" [(ngModel)]="pollName" name="unknown" class="validate">
-      <label for="poll-name">שם סקר</label>
-    </div>
-    <div class="input-field col s3 m3 l3 xl3">
-      <select materialize="material_select" [(ngModel)]="selectedMonth" name="month">
-        <option value="" selected disabled>בחירה</option>
-        <option *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="item - 1">{{item}}</option>
-      </select>
-      <label>חודש</label>
-    </div>
-    <div class="input-field col s3 m3 l3 xl3">
-      <select materialize="material_select" [(ngModel)]="selectedYear" name="year">
-        <option value="" selected disabled>בחירה</option>
-        <option [value]="currentYear">{{currentYear}}</option>
-        <option [value]="currentYear + 1">{{currentYear + 1}}</option>
-      </select>
-      <label>שנה</label>
-    </div>
-    <div class="input-field col s3 m3 l3 xl3">
-      <button type="button" id="submit" (click)="createPoll()" class="waves-effect waves-light btn">יאללה!</button>
-    </div>
+  <div class="container">
+    <mat-form-field>
+      <input type="text" id="poll-name" [(ngModel)]="pollName" name="unknown" matInput placeholder="שם סקר">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [(ngModel)]="selectedMonth" name="month" placeholder="חודש">
+        <mat-option *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="item - 1">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [(ngModel)]="selectedYear" name="year" placeholder="שנה">
+        <mat-option [value]="currentYear">{{currentYear}}</mat-option>
+        <mat-option [value]="currentYear + 1">{{currentYear + 1}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button *ngIf="!(this.selectedMonth != undefined && this.selectedYear && this.pollName)" mat-raised-button disabled type="button">יאללה!</button>
+    <button *ngIf="this.selectedMonth != undefined && this.selectedYear && this.pollName" mat-raised-button type="button" id="submit" color="primary" (click)="createPoll()">יאללה!</button>
   </div>
   <app-poll *ngIf="poll" [poll]="poll" [managerMode]="true"></app-poll>
-  <div *ngIf="poll" class="input-field col s3 m3 l3 xl3">
-    <button type="button" id="publish" (click)="publishPoll()" class="waves-effect waves-light btn">פרסום</button>
+  <div *ngIf="poll">
+    <button mat-raised-button type="button" id="publish" color="primary" (click)="publishPoll()">פרסום</button>
   </div>
 </form>

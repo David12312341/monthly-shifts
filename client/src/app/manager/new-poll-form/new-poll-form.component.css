@@ -1,5 +1,7 @@
-#submit {
-    width:90%;
-    left:5%;
-    right:5%;
+div.container {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    align-items: center;
 }

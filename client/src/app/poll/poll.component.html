@@ -1,36 +1,27 @@
-<table class="highlight">
+<table class="highlight" style="width:100%">
   <thead>
     <tr>
       <th *ngFor="let i of ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי']">{{i}}</th>
     </tr>
   </thead>
-  <tbody dir="ltr">
+  <tbody>
     <tr *ngFor="let week of poll">
       <td *ngFor="let day of week" style="width:16.667%">
-        <h4>{{day.date}}</h4>
-        <div *ngFor="let shift of day.shifts" class="input-field tooltipped" materialize="tooltip" [materializeParams]="[{'tooltip':shift.remark, 'delay': shift.remark ? 0 : 100000000000}]">
-          <div *ngIf="managerMode">
-            <a href="#modal1" (click)="selectShiftForRemark(shift)" class="poll-shift-button"><i class="material-icons">comment</i></a>
-            <input type="text" [(ngModel)]="shift.time" style="width:70%;" (blur)="checkTextInput(day, shift)" (keyup.enter)="checkTextInput(day, shift)" />
+        <h2>{{day.date}}</h2>
+        <div *ngFor="let shift of day.shifts">
+          <div *ngIf="managerMode" matTooltip="{{shift.remark}}">
+            <mat-form-field>
+              <input matInput type="text" [(ngModel)]="shift.time" style="width:70%;" (blur)="checkTextInput(day, shift)" (keyup.enter)="checkTextInput(day, shift)" />
+            </mat-form-field>
+            <a href="javascript:void(0)" (click)="openRemarkDialog(shift)" class="poll-shift-button">
+              <i class="material-icons">comment</i>
+            </a>
           </div>
-          <div *ngIf="!managerMode">
-            <input type="checkbox" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" class="filled-in" />
-            <label [for]="day.date + '-' + shift.time">{{shift.time}}</label>
+          <div class="checkbox-container" *ngIf="!managerMode">
+            <mat-checkbox matTooltip="{{shift.remark}}" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" color="warn">{{shift.time}}</mat-checkbox>
           </div>
         </div>
       </td>
     </tr>
   </tbody>
 </table>
-<div materialize="modal" id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>הכנס הערה</h4>
-    <div class="input-field col s12 m12 l12 <xl12></xl12>">
-      <input type="text" id="remark" [(ngModel)]="selectedRemark" name="remark" class="validate">
-      <label for="remark">תוכן</label>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect btn-flat" style="float:left;" (click)="selectedShift.remark = selectedRemark">אישור</a>
-  </div>
-</div>

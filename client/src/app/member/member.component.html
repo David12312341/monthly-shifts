@@ -1,24 +1,21 @@
+<mat-spinner *ngIf="polls == null || polls.length == 0"></mat-spinner>
 <form *ngIf="polls != null && polls.length != 0">
-  <div class="row">
-    <div class="input-field col s3 m3 l3 xl3">
-      <select materialize="material_select" [(ngModel)]="selectedPollId" name="poll_selection">
-        <option *ngFor="let poll of polls" [value]="poll._id">{{poll.name}} {{getMonthView(poll.month)}}/{{poll.year}}</option>
-      </select>
-      <label>סקר</label>
-    </div>
-  </div>
+  <mat-form-field>
+    <mat-select placeholder="סקר" [(ngModel)]="selectedPollId" name="poll_selection">
+      <mat-option *ngFor="let poll of polls" [value]="poll._id">{{poll.name}} {{getMonthView(poll.month)}}/{{poll.year}}</mat-option>
+    </mat-select>
+  </mat-form-field>
   <div *ngIf="selectedPoll != null">
-    <div class="input-field col s3 m3 l3 xl3" style="right:0;">
-      <mat-form-field>
-          <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedUserName" name="username">
-      </mat-form-field>
+    <mat-form-field>
+      <input class="member-name" [matAutocomplete]="auto" [(ngModel)]="selectedUserName" name="username" placeholder="שם מלא" matInput>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of userNames" [value]="option">
           {{ option }}
         </mat-option>
       </mat-autocomplete>
-    </div>
+    </mat-form-field>
     <app-poll [poll]="selectedPoll.shifts"></app-poll>
-    <button id="submit" type="button" (click)="saveUserPreference()" class="waves-effect waves-light btn">אישור</button>
+    <button *ngIf="!selectedUserName" mat-raised-button disabled>אישור</button>
+    <button *ngIf="selectedUserName" mat-raised-button id="submit" color="primary" type="button" (click)="saveUserPreference()">אישור</button>
   </div>
 </form>

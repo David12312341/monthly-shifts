@@ -1,0 +1,9 @@
+<h4 mat-dialog-title>הכנס הערה</h4>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput type="text" id="remark" [(ngModel)]="selectedRemark" name="remark" class="validate" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions dir="ltr">
+  <button mat-button tabindex="1" [mat-dialog-close]="selectedRemark">אישור</button>
+</div>

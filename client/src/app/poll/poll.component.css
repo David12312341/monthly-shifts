@@ -7,6 +7,11 @@ td {
     vertical-align: top;
 }
 
-input.filled-in {
-    left:0!important;
+.checkbox-container {
+    margin-bottom: 8px;
+}
+
+td .mat-form-field {
+    width: 80%;
+    text-align: center;
 }
