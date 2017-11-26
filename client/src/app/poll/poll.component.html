@@ -18,7 +18,7 @@
             </a>
           </div>
           <div class="checkbox-container" *ngIf="!managerMode">
-            <mat-checkbox matTooltip="{{shift.remark}}" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" color="warn">{{shift.time}}</mat-checkbox>
+            <mat-checkbox matTooltip="{{shift.remark}}" (change)="onShiftChange(shift)" [(indeterminate)]="shift.isIndeterminate" (click)="onShiftClick(shift)" [(ngModel)]="shift.isSelected" [id]="day.date + '-' + shift.time" color="warn">{{shift.time}}</mat-checkbox>
           </div>
         </div>
       </td>

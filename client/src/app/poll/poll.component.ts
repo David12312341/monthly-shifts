@@ -9,6 +9,8 @@ import { RemarkDialogComponent } from "app/remark-dialog/remark-dialog.component
   styleUrls: ['./poll.component.css']
 })
 export class PollComponent implements OnInit {
+  shouldSetSelected: boolean;
+  shouldSetIndeterminate: any;
 
   selectedShift: any;
   selectedRemark: string;
@@ -19,6 +21,26 @@ export class PollComponent implements OnInit {
   }
 
   ngOnInit() { }
+
+  onShiftChange(shift: any): void {
+    shift.isIndeterminate = this.shouldSetIndeterminate;
+    shift.isSelected = this.shouldSetSelected;
+    console.log(`shift is selected: ${shift.isSelected}`);
+    console.log(`shift is indeterminate: ${shift.isIndeterminate}`);
+  }
+
+  onShiftClick(shift: any): void {
+    if (shift.isIndeterminate) {
+      this.shouldSetIndeterminate = false;
+      this.shouldSetSelected = false;
+    } else if (shift.isSelected) {
+      this.shouldSetIndeterminate = true;
+      this.shouldSetSelected = null;
+    } else {
+      this.shouldSetIndeterminate = false;
+      this.shouldSetSelected = true;
+    }
+  }
 
   openRemarkDialog(shift: any): void {
     this.selectedShift = shift;
