@@ -53,11 +53,8 @@ export class AppService {
             });
     }
 
-    loadUserPreferences(name: string) {
-        let params = new URLSearchParams();
-        params.set("name", name);
-        return this.http
-            .get('dal/get-month', { search: params })
+    loadUserPreferences(pollId: string) {
+        return this.http.get('dal/load-user-preferences', {search: {"pollId": pollId}})
             .map(res => res.json())
             .catch((err: any) => {
                 console.error("HTTP get failed");

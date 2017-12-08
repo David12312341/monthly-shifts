@@ -1,0 +1,11 @@
+th {
+    text-align: right;
+}
+
+td {
+    text-align: right;
+    vertical-align: top;
+}
+mat-radio-button {
+    margin-bottom: 8px;
+}

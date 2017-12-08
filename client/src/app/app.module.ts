@@ -10,8 +10,9 @@ import { MemberComponent } from './member/member.component';
 import { ManagerComponent } from './manager/manager.component';
 import { NewPollFormComponent } from './manager/new-poll-form/new-poll-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule, MatSnackBarModule, MatCheckboxModule, MatTableModule, MatToolbarModule, MatAutocompleteModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatTooltipModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule, MatCheckboxModule, MatTableModule, MatToolbarModule, MatAutocompleteModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatTooltipModule, MatProgressSpinnerModule, MatRadioModule } from '@angular/material';
 import { RemarkDialogComponent } from './remark-dialog/remark-dialog.component';
+import { ProcessPollResultsComponent } from './manager/process-poll-results/process-poll-results.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RemarkDialogComponent } from './remark-dialog/remark-dialog.component';
     MemberComponent,
     ManagerComponent,
     NewPollFormComponent,
-    RemarkDialogComponent
+    RemarkDialogComponent,
+    ProcessPollResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +40,7 @@ import { RemarkDialogComponent } from './remark-dialog/remark-dialog.component';
     MatTableModule,
     MatToolbarModule,
     MatSelectModule,
+    MatRadioModule,
     MatButtonModule,
     MatInputModule
   ],

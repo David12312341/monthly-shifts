@@ -1,5 +1,4 @@
 import { Day } from "app/models/day";
 
-export class Week {
-    public days: Day[];
+export class Week extends Array<Day> {
 }

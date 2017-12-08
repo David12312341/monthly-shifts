@@ -45,12 +45,16 @@ export class AppComponent implements OnInit {
   setManagerNavButtons(): void {
     this.navButtons = [
       {
-        caption: "חזרה",
-        action: () => this.isManager = false
-      },
-      {
         caption: "סקר חדש",
         action: () => this.screen = ScreenType.NewPoll
+      },
+      {
+        caption: "עיבוד",
+        action: () => this.screen = ScreenType.ProcessPollResults
+      },
+      {
+        caption: "יציאה",
+        action: () => this.isManager = false
       }
     ]
   }

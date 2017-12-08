@@ -1,4 +1,5 @@
 export enum ScreenType {
     Default,
-    NewPoll
+    NewPoll,
+    ProcessPollResults
 }

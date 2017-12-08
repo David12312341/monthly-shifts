@@ -1,4 +1,4 @@
-import { Renderer2,ElementRef, Component, OnInit } from '@angular/core';
+import { Renderer2, ElementRef, Component, OnInit } from '@angular/core';
 import { AppService } from "app/app.service";
 import { Observable } from "rxjs/Observable";
 import { FormControl } from "@angular/forms";
@@ -21,7 +21,7 @@ export class MemberComponent implements OnInit {
   selectedPoll: Poll;
   _selectedUserName: string;
   selectedUser: User;
-  
+
   set selectedUserName(value) {
     this._selectedUserName = value;
     this.userNames = this.userPreferences.filter(u => u.preferences._id == this.selectedPoll._id && u.name.includes(value)).map(u => u.name);
@@ -31,24 +31,23 @@ export class MemberComponent implements OnInit {
       this.selectedPoll = this.selectedUser.preferences;
     }
   }
-  get selectedUserName():string {
+  get selectedUserName(): string {
     return this._selectedUserName;
   }
 
   set selectedPollId(value: string) {
     this.selectedPoll = this.polls.find(p => p._id == value);
-    this.userNames = this.userPreferences.filter(u => u.preferences._id == value).map(u => u.name);
+    this.appService.loadUserPreferences(value).subscribe(result => {
+      this.userPreferences = result
+      this.userNames = this.userPreferences.map(u => u.name);
+    });
   }
 
   constructor(private appService: AppService, private snackBar: MatSnackBar) {
-    this.appService.loadAllUserPreferences().subscribe(result => {
-      this.userPreferences = result;
-      this.appService.loadPolls()
-        .subscribe((polls: Observable<any>) => {
-          polls.forEach(p => this.polls.push(p));
-          // if (this.polls.length > 0) this.selectedPollId = this.polls[0]._id;
-        });
-    });
+    this.appService.loadPolls()
+      .subscribe((polls: Observable<any>) => {
+        polls.forEach(p => this.polls.push(p));
+      });
   }
 
   ngOnInit() {
@@ -60,7 +59,7 @@ export class MemberComponent implements OnInit {
 
   saveUserPreference(): void {
     this.appService.saveUserPreferences({ name: this.selectedUserName, preferences: this.selectedPoll });
-    this.snackBar.open("העדפותיך נשמרו", null, {duration:3000, direction: "rtl"})
+    this.snackBar.open("העדפותיך נשמרו", null, { duration: 3000, direction: "rtl" })
   }
 
 }

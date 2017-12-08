@@ -1,0 +1,34 @@
+<mat-spinner *ngIf="polls == null || polls.length == 0"></mat-spinner>
+<form *ngIf="polls != null && polls.length != 0">
+  <mat-form-field>
+    <mat-select placeholder="סקר" [(ngModel)]="selectedPollId" name="poll_selection">
+      <mat-option *ngFor="let poll of polls" [value]="poll._id">{{poll.name}} {{getMonthView(poll.month)}}/{{poll.year}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="selectedPoll != null">
+    <table>
+      <thead>
+        <th>שם</th>
+        <th>סימוני "כן"</th>
+        <th>סימוני "אולי"</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userPreferences">
+          <td>{{user.name}}</td>
+          <mat-radio-group dir="ltr" align="after">
+            <td>
+              <div *ngFor="let yes of userYesses[user.name]">
+                <mat-radio-button [value]="yes">{{yes}}</mat-radio-button>
+              </div>
+            </td>
+            <td>
+              <div *ngFor="let maybe of userMaybes[user.name]">
+                <mat-radio-button [value]="maybe">{{maybe}}</mat-radio-button>
+              </div>
+            </td>
+          </mat-radio-group>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</form>
