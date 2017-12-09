@@ -6,6 +6,6 @@ td {
     text-align: right;
     vertical-align: top;
 }
-mat-radio-button {
+mat-checkbox {
     margin-bottom: 8px;
 }

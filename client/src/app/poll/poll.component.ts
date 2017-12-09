@@ -25,8 +25,6 @@ export class PollComponent implements OnInit {
   onShiftChange(shift: any): void {
     shift.isIndeterminate = this.shouldSetIndeterminate;
     shift.isSelected = this.shouldSetSelected;
-    console.log(`shift is selected: ${shift.isSelected}`);
-    console.log(`shift is indeterminate: ${shift.isIndeterminate}`);
   }
 
   onShiftClick(shift: any): void {

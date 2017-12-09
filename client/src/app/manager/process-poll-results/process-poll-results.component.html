@@ -15,18 +15,16 @@
       <tbody>
         <tr *ngFor="let user of userPreferences">
           <td>{{user.name}}</td>
-          <mat-radio-group dir="ltr" align="after">
-            <td>
-              <div *ngFor="let yes of userYesses[user.name]">
-                <mat-radio-button [value]="yes">{{yes}}</mat-radio-button>
-              </div>
-            </td>
-            <td>
-              <div *ngFor="let maybe of userMaybes[user.name]">
-                <mat-radio-button [value]="maybe">{{maybe}}</mat-radio-button>
-              </div>
-            </td>
-          </mat-radio-group>
+          <td>
+            <div *ngFor="let yes of userYesses[user.name]">
+              <mat-checkbox dir="ltr" labelPosition="before" [(ngModel)]="yes.isSelected" (change)="sortUserPreferences()" name="yes-checkbox">{{yes.option}}</mat-checkbox>
+            </div>
+          </td>
+          <td>
+            <div *ngFor="let maybe of userMaybes[user.name]">
+              <mat-checkbox dir="ltr" labelPosition="before" [(ngModel)]="maybe.isSelected" (change)="sortUserPreferences()" name="maybe-checkbox">{{maybe.option}}</mat-checkbox>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

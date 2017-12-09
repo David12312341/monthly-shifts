@@ -29,13 +29,14 @@ export class ProcessPollResultsComponent implements OnInit {
             if (!day.shifts) return;
             day.shifts.forEach(shift => {
               if (shift.isSelected)
-                this.userYesses[u.name].push(`${day.date} ${shift.time}`);
+                this.userYesses[u.name].push({ option: `${day.date} ${shift.time}` });
               else if (shift.isSelected === null)
-                this.userMaybes[u.name].push(`${day.date} ${shift.time}`);
+                this.userMaybes[u.name].push({ option: `${day.date} ${shift.time}` });
             });
           });
         });
       });
+      this.sortUserPreferences();
     });
   }
 
@@ -53,4 +54,16 @@ export class ProcessPollResultsComponent implements OnInit {
     return parseInt(month) + 1;
   }
 
+  sortUserPreferences(): void {
+    if (!this.userPreferences) return;
+    this.userPreferences = this.userPreferences.sort((u1, u2) => {
+      let u1Yesses: number = 0;
+      let u2Yesses: number = 0;
+      if (this.userYesses[u1.name].some(yes => yes.isSelected)) u1Yesses += 10000;
+      if (this.userYesses[u2.name].some(yes => yes.isSelected)) u2Yesses += 10000;
+      u1.preferences.shifts.forEach(week => week.forEach(day => u1Yesses += day.shifts ? day.shifts.filter(shift => shift.isSelected).length : 0));
+      u2.preferences.shifts.forEach(week => week.forEach(day => u2Yesses += day.shifts ? day.shifts.filter(shift => shift.isSelected).length : 0));
+      return u1Yesses - u2Yesses;
+    });
+  }
 }
