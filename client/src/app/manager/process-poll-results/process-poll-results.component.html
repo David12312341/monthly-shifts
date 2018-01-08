@@ -1,32 +1,64 @@
 <mat-spinner *ngIf="polls == null || polls.length == 0"></mat-spinner>
-<form *ngIf="polls != null && polls.length != 0">
+<div *ngIf="polls != null && polls.length != 0">
   <mat-form-field>
     <mat-select placeholder="סקר" [(ngModel)]="selectedPollId" name="poll_selection">
       <mat-option *ngFor="let poll of polls" [value]="poll._id">{{poll.name}} {{getMonthView(poll.month)}}/{{poll.year}}</mat-option>
     </mat-select>
   </mat-form-field>
   <div *ngIf="selectedPoll != null">
-    <table>
-      <thead>
-        <th>שם</th>
-        <th>סימוני "כן"</th>
-        <th>סימוני "אולי"</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of userPreferences">
-          <td>{{user.name}}</td>
-          <td>
-            <div *ngFor="let yes of userYesses[user.name]">
-              <mat-checkbox dir="ltr" labelPosition="before" [(ngModel)]="yes.isSelected" (change)="sortUserPreferences()" name="yes-checkbox">{{yes.option}}</mat-checkbox>
-            </div>
-          </td>
-          <td>
-            <div *ngFor="let maybe of userMaybes[user.name]">
-              <mat-checkbox dir="ltr" labelPosition="before" [(ngModel)]="maybe.isSelected" (change)="sortUserPreferences()" name="maybe-checkbox">{{maybe.option}}</mat-checkbox>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <h3>משתבצים</h3>
+      <table>
+        <thead>
+          <th>שם</th>
+          <th>סימוני "כן"</th>
+          <th>סימוני "אולי"</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userPreferences">
+            <td>{{user.name}}</td>
+            <td>
+              <div *ngFor="let selection of userYesses[user.name]">
+                <mat-checkbox class="option-checkbox" dir="ltr" labelPosition="before" [(ngModel)]="selection.isSelected" (change)="sortSelections()" name="usc">{{selection.option}}</mat-checkbox>
+              </div>
+            </td>
+            <td>
+              <div *ngFor="let selection of userMaybes[user.name]">
+                <mat-checkbox class="option-checkbox" dir="ltr" labelPosition="before" [(ngModel)]="selection.isSelected" (change)="sortSelections()" name="umc">{{selection.option}}</mat-checkbox>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-container">
+      <h3>משמרות</h3>
+      <table>
+        <thead>
+          <th>משבצת זמן</th>
+          <th>סימוני "כן"</th>
+          <th>סימוני "אולי"</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let shift of totalShifts">
+            <td dir="ltr">{{shift.time}}</td>
+            <td>
+              <div *ngFor="let selection of shiftYesses[shift.time]">
+                <mat-checkbox class="option-checkbox" [(ngModel)]="selection.isSelected" (change)="sortSelections()" name="syc">{{selection.name}}</mat-checkbox>
+              </div>
+            </td>
+            <td>
+              <div *ngFor="let selection of shiftMaybes[shift.time]">
+                <mat-checkbox class="option-checkbox" [(ngModel)]="selection.isSelected" (change)="sortSelections()" name="smc">{{selection.name}}</mat-checkbox>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="userPreferences" class="submit-container">
+      <button mat-raised-button id="submit" color="accent" type="button">שמירת טיוטא</button>
+      <button mat-raised-button id="submit" color="primary" type="button">פרסום</button>
+    </div>
   </div>
-</form>
+</div>

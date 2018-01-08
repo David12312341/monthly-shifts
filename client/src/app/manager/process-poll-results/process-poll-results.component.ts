@@ -3,6 +3,7 @@ import { AppService } from "app/app.service";
 import { User } from "app/models/user";
 import { Observable } from "rxjs/Observable";
 import { Poll } from "app/models/poll";
+import { Selection } from "app/models/selection";
 
 @Component({
   selector: 'process-poll-results',
@@ -11,11 +12,17 @@ import { Poll } from "app/models/poll";
   encapsulation: ViewEncapsulation.None
 })
 export class ProcessPollResultsComponent implements OnInit {
+
   selectedPoll: Poll;
   polls: Poll[] = [];
   userPreferences: User[];
-  userYesses: {} = {};
-  userMaybes: {} = {};
+  selectionYesses: Selection[] = [];
+  seletionMaybes: Selection[] = [];
+  userYesses: Map<string, Selection[]> = new Map();
+  userMaybes: Map<string, Selection[]> = new Map();
+  shiftYesses: Map<string, Selection[]> = new Map();
+  shiftMaybes: Map<string, Selection[]> = new Map();
+  totalShifts: any[] = [];
 
   set selectedPollId(value: string) {
     this.selectedPoll = this.polls.find(p => p._id == value);
@@ -28,15 +35,24 @@ export class ProcessPollResultsComponent implements OnInit {
           week.forEach(day => {
             if (!day.shifts) return;
             day.shifts.forEach(shift => {
-              if (shift.isSelected)
-                this.userYesses[u.name].push({ option: `${day.date} ${shift.time}` });
-              else if (shift.isSelected === null)
-                this.userMaybes[u.name].push({ option: `${day.date} ${shift.time}` });
+              if (!this.shiftYesses[`${day.date} ${shift.time}`]) this.shiftYesses[`${day.date} ${shift.time}`] = [];
+              if (!this.shiftMaybes[`${day.date} ${shift.time}`]) this.shiftMaybes[`${day.date} ${shift.time}`] = [];
+              if (shift.isSelected) {
+                let selection = new Selection(`${day.date} ${shift.time}`, u.name);
+                this.userYesses[u.name].push(selection);
+                this.shiftYesses[`${day.date} ${shift.time}`].push(selection);
+              }
+              else if (shift.isSelected === null) {
+                let selection = new Selection(`${day.date} ${shift.time}`, u.name);
+                this.userMaybes[u.name].push(selection);
+                this.shiftMaybes[`${day.date} ${shift.time}`].push(selection);
+              }
             });
           });
         });
       });
-      this.sortUserPreferences();
+      this.populateTotalShifts();
+      this.sortSelections();
     });
   }
 
@@ -54,7 +70,17 @@ export class ProcessPollResultsComponent implements OnInit {
     return parseInt(month) + 1;
   }
 
-  sortUserPreferences(): void {
+  private populateTotalShifts(): any {
+    this.totalShifts.length = 0;
+    this.selectedPoll.shifts.forEach(week => week.forEach(day => {
+      if (day.shifts) day.shifts.forEach(shift => {
+        if (this.shiftYesses[`${day.date} ${shift.time}`].length != 0 || this.shiftMaybes[`${day.date} ${shift.time}`] != 0)
+          this.totalShifts.push({ time: `${day.date} ${shift.time}`, assignees: [] });
+      });
+    }));
+  }
+
+  sortSelections(): void {
     if (!this.userPreferences) return;
     this.userPreferences = this.userPreferences.sort((u1, u2) => {
       let u1Yesses: number = 0;
@@ -64,6 +90,15 @@ export class ProcessPollResultsComponent implements OnInit {
       u1.preferences.shifts.forEach(week => week.forEach(day => u1Yesses += day.shifts ? day.shifts.filter(shift => shift.isSelected).length : 0));
       u2.preferences.shifts.forEach(week => week.forEach(day => u2Yesses += day.shifts ? day.shifts.filter(shift => shift.isSelected).length : 0));
       return u1Yesses - u2Yesses;
+    });
+    this.totalShifts = this.totalShifts.sort((s1, s2) => {
+      let s1Yesses: number = 0;
+      let s2Yesses: number = 0;
+      if (this.shiftYesses[s1.time].some(selection => selection.isSelected)) s1Yesses += 1000;
+      if (this.shiftYesses[s2.time].some(selection => selection.isSelected)) s2Yesses += 1000;
+      s1Yesses += this.shiftYesses[s1.time].length;
+      s2Yesses += this.shiftYesses[s2.time].length
+      return s1Yesses - s2Yesses;
     });
   }
 }
