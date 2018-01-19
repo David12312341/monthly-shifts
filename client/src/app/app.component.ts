@@ -6,18 +6,19 @@ import { ScreenType } from "app/manager/screen-type";
 
 @Component({
   selector: 'app-root',
+  host: { '(window:keydown)': 'hotkeyDown($event)', '(window:keyup)': 'hotkeyUp($event)' },
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
 
+  private _isCtrlDown: boolean;
   private _isManager: boolean;
-
   screen: ScreenType;
 
   set isManager(value: boolean) {
     if (value) this.setManagerNavButtons();
-    else this.setUserNavButtons();
+    else this.displayManagementButton();
     this._isManager = value;
   }
 
@@ -30,16 +31,15 @@ export class AppComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.setUserNavButtons();
   }
 
-  setUserNavButtons(): void {
+  displayManagementButton(): void {
     this.navButtons = [
       {
         caption: "ניהול",
         action: () => this.isManager = true
       }
-    ]
+    ];
   }
 
   setManagerNavButtons(): void {
@@ -56,7 +56,16 @@ export class AppComponent implements OnInit {
         caption: "יציאה",
         action: () => this.isManager = false
       }
-    ]
+    ];
+  }
+
+  hotkeyDown(event: KeyboardEvent) {
+    if (event.keyCode == 17) this._isCtrlDown = true;
+    if (event.keyCode == 192 && this._isCtrlDown) this.displayManagementButton();
+  }
+
+  hotkeyUp(event: KeyboardEvent) {
+    if (event.keyCode == 17) this._isCtrlDown = false;
   }
 
 }
