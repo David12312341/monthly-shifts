@@ -22,7 +22,7 @@ import { ProcessPollResultsComponent } from './manager/process-poll-results/proc
     ManagerComponent,
     NewPollFormComponent,
     RemarkDialogComponent,
-    ProcessPollResultsComponent
+    ProcessPollResultsComponent,
   ],
   imports: [
     BrowserModule,

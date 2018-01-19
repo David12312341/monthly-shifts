@@ -4,6 +4,10 @@ import { User } from "app/models/user";
 import { Observable } from "rxjs/Observable";
 import { Poll } from "app/models/poll";
 import { Selection } from "app/models/selection";
+import { UserAssignments } from "app/models/user-assignments";
+import { Shift } from "app/models/shift";
+import { ShiftAssignments } from "app/models/shift-assignments";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: 'process-poll-results',
@@ -56,7 +60,7 @@ export class ProcessPollResultsComponent implements OnInit {
     });
   }
 
-  constructor(private appService: AppService) {
+  constructor(private appService: AppService, private snackBar: MatSnackBar) {
     this.appService.loadPolls()
       .subscribe((polls: Observable<any>) => {
         polls.forEach(p => this.polls.push(p));
@@ -94,11 +98,31 @@ export class ProcessPollResultsComponent implements OnInit {
     this.totalShifts = this.totalShifts.sort((s1, s2) => {
       let s1Yesses: number = 0;
       let s2Yesses: number = 0;
-      if (this.shiftYesses[s1.time].some(selection => selection.isSelected)) s1Yesses += 1000;
-      if (this.shiftYesses[s2.time].some(selection => selection.isSelected)) s2Yesses += 1000;
+      if (this.shiftYesses[s1.time].concat(this.shiftMaybes[s1.time]).some(selection => selection.isSelected)) s1Yesses += 1000;
+      if (this.shiftYesses[s2.time].concat(this.shiftMaybes[s2.time]).some(selection => selection.isSelected)) s2Yesses += 1000;
       s1Yesses += this.shiftYesses[s1.time].length;
       s2Yesses += this.shiftYesses[s2.time].length
       return s1Yesses - s2Yesses;
     });
+  }
+
+  publish(): void {
+    let userAssignments: UserAssignments[] = [];
+    for (const name in this.userYesses) {
+      let assignments: Shift[] = [];
+      if (this.userYesses.hasOwnProperty(name)) {
+        const selections = this.userYesses[name];
+        selections.concat(this.userMaybes[name]).filter(selection => selection.isSelected).forEach(selection => assignments.push({ isSelected: true, time: selection.option, remark: null }));
+        userAssignments.push({ name: name, assignments: assignments });
+      }
+    }
+    let shiftAssignments: ShiftAssignments = { pollId: this.selectedPoll._id, assignments: userAssignments };
+    console.log(shiftAssignments);
+    this.appService.publishAssignments(shiftAssignments);
+    this.snackBar.open("השיבוצים פורסמו", null, { duration: 3000, direction: "rtl" })
+  }
+
+  saveDraft() {
+    alert("saveDraft");
   }
 }

@@ -6,10 +6,23 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import { ShiftAssignments } from "app/models/shift-assignments";
 
 @Injectable()
 export class AppService {
     constructor(private http: Http) { }
+
+    loadShiftAssignments(pollId: string): Observable<ShiftAssignments> {
+        let params = new URLSearchParams();
+        params.set("pollId", pollId);
+        return this.http.get('dal/load-shift-assignments', { search: params })
+            .map(res => res.json())
+            .catch((err: any) => {
+                console.error("HTTP get failed.");
+                console.error(err);
+                return Promise.reject(err.message || err)
+            });
+    }
 
     getMonth(year: number, month: number): Observable<any> {
         let params = new URLSearchParams();
@@ -36,7 +49,7 @@ export class AppService {
 
     publishPoll(poll: any) {
         let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
-        this.http.post('dal/publish', JSON.stringify(poll), { headers: headers }).subscribe(r => { });
+        this.http.post('dal/publish-poll', JSON.stringify(poll), { headers: headers }).subscribe(r => { });
     }
 
     saveUserPreferences(preferences: any) {
@@ -54,11 +67,16 @@ export class AppService {
     }
 
     loadUserPreferences(pollId: string) {
-        return this.http.get('dal/load-user-preferences', {search: {"pollId": pollId}})
+        return this.http.get('dal/load-user-preferences', { search: { "pollId": pollId } })
             .map(res => res.json())
             .catch((err: any) => {
                 console.error("HTTP get failed");
                 return Promise.reject(err.message || err)
             });
+    }
+
+    publishAssignments(assignments: ShiftAssignments) {
+        let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+        this.http.post('dal/publish-assignments', JSON.stringify(assignments), { headers: headers }).subscribe(r => { });
     }
 }

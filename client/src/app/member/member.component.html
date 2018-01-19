@@ -14,6 +14,10 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <div *ngIf="selectedUserAssignments != null">
+      <h1>המשמרות כבר כאן:</h1>
+      <h2 dir="ltr" style="text-align: right" *ngFor="let item of selectedUserAssignments.assignments">{{item.time}}</h2>
+    </div>
     <app-poll [poll]="selectedPoll.shifts"></app-poll>
     <button *ngIf="!selectedUserName" mat-raised-button disabled>אישור</button>
     <button *ngIf="selectedUserName" mat-raised-button id="submit" color="primary" type="button" (click)="saveUserPreference()">אישור</button>

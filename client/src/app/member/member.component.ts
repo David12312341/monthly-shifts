@@ -5,6 +5,9 @@ import { FormControl } from "@angular/forms";
 import { User } from "app/models/user";
 import { Poll } from "app/models/poll";
 import { MatSnackBar } from "@angular/material";
+import { Shift } from "app/models/shift";
+import { ShiftAssignments } from "app/models/shift-assignments";
+import { UserAssignments } from "app/models/user-assignments";
 
 
 @Component({
@@ -13,7 +16,9 @@ import { MatSnackBar } from "@angular/material";
   styleUrls: ['./member.component.css']
 })
 export class MemberComponent implements OnInit {
-
+  
+  selectedUserAssignments: UserAssignments;
+  assignments: ShiftAssignments;
   userNames: string[] = [];
   userPreferences: User[];
   month: any;
@@ -29,7 +34,9 @@ export class MemberComponent implements OnInit {
     if (selectedUser) {
       this.selectedUser = selectedUser;
       this.selectedPoll = this.selectedUser.preferences;
+      this.selectedUserAssignments = this.assignments.assignments.find(assignment => assignment.name == this._selectedUserName);
     }
+    else this.selectedUserAssignments = null;
   }
   get selectedUserName(): string {
     return this._selectedUserName;
@@ -41,6 +48,7 @@ export class MemberComponent implements OnInit {
       this.userPreferences = result
       this.userNames = this.userPreferences.map(u => u.name);
     });
+    this.appService.loadShiftAssignments(this.selectedPoll._id).subscribe(assignments => this.assignments = assignments);    
   }
 
   constructor(private appService: AppService, private snackBar: MatSnackBar) {

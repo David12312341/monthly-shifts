@@ -20,17 +20,45 @@ router.get('/get-polls', (req, res) => {
   });
 });
 
-router.post('/publish', function (req, res) {
+router.post('/publish-poll', function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
     db.collection('polls').insertOne(req.body);
     db.close();
   });
 });
 
+router.post('/publish-assignments', function (req, res) {
+  mongoClient.connect(mongodbUri, function (err, db) {
+    let query = {};
+    db.collection('shift-assignments').updateOne({ pollId: req.body.pollId }, req.body, { upsert: true });
+    db.close();
+  });
+});
+
 router.post("/save-user-preferences", function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
-    db.collection('user-preferences').updateOne({ name: req.body.name }, req.body, { upsert: true });
+    db.collection('user-preferences')
+      .updateOne({
+        name: req.body.name,
+        "preferences.month": req.body.preferences.month,
+        "preferences.year": req.body.preferences.year,
+        "preferences.name": req.body.preferences.name
+      }, req.body, {
+        upsert: true
+      });
     db.close();
+  });
+});
+
+router.get("/load-shift-assignments", (req, res) => {
+  mongoClient.connect(mongodbUri, (err, db) => {
+    let query = {};
+    if (req.query.pollId)
+      query['pollId'] = req.query.pollId;
+    db.collection('shift-assignments').findOne(query, (err, result) => {
+        res.json(result);
+        db.close();
+      });
   });
 });
 
