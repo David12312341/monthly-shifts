@@ -16,7 +16,7 @@ import { MatSnackBar } from "@angular/material";
   encapsulation: ViewEncapsulation.None
 })
 export class ProcessPollResultsComponent implements OnInit {
-
+  
   selectedPoll: Poll;
   polls: Poll[] = [];
   userPreferences: User[];
@@ -30,34 +30,7 @@ export class ProcessPollResultsComponent implements OnInit {
 
   set selectedPollId(value: string) {
     this.selectedPoll = this.polls.find(p => p._id == value);
-    this.appService.loadUserPreferences(value).subscribe(result => {
-      this.userPreferences = result;
-      this.userPreferences.forEach(u => {
-        this.userYesses[u.name] = [];
-        this.userMaybes[u.name] = [];
-        u.preferences.shifts.forEach(week => {
-          week.forEach(day => {
-            if (!day.shifts) return;
-            day.shifts.forEach(shift => {
-              if (!this.shiftYesses[`${day.date} ${shift.time}`]) this.shiftYesses[`${day.date} ${shift.time}`] = [];
-              if (!this.shiftMaybes[`${day.date} ${shift.time}`]) this.shiftMaybes[`${day.date} ${shift.time}`] = [];
-              if (shift.isSelected) {
-                let selection = new Selection(`${day.date} ${shift.time}`, u.name);
-                this.userYesses[u.name].push(selection);
-                this.shiftYesses[`${day.date} ${shift.time}`].push(selection);
-              }
-              else if (shift.isSelected === null) {
-                let selection = new Selection(`${day.date} ${shift.time}`, u.name);
-                this.userMaybes[u.name].push(selection);
-                this.shiftMaybes[`${day.date} ${shift.time}`].push(selection);
-              }
-            });
-          });
-        });
-      });
-      this.populateTotalShifts();
-      this.sortSelections();
-    });
+    this.populateAssignments(value);
   }
 
   constructor(private appService: AppService, private snackBar: MatSnackBar) {
@@ -72,6 +45,57 @@ export class ProcessPollResultsComponent implements OnInit {
 
   getMonthView(month: string) {
     return parseInt(month) + 1;
+  }
+
+  /**
+   * Get user preferences and previously saved assignments for this poll and populate relevant members.
+   * @param pollId ID of selected poll
+   */
+  populateAssignments(pollId: string): void {
+    this.appService.loadShiftAssignments(pollId, false).subscribe(shiftAssignments => {
+      this.appService.loadUserPreferences(pollId).subscribe(result => {
+        this.userPreferences = result;
+        this.userPreferences.forEach(u => {
+          this.userYesses[u.name] = [];
+          this.userMaybes[u.name] = [];
+          u.preferences.shifts.forEach(week => {
+            week.forEach(day => {
+              if (!day.shifts) return;
+              day.shifts.forEach(shift => {
+                let shiftTime = `${day.date} ${shift.time}`;
+                if (!this.shiftYesses[shiftTime]) this.shiftYesses[shiftTime] = [];
+                if (!this.shiftMaybes[shiftTime]) this.shiftMaybes[shiftTime] = [];
+                this.addSelection(shift, shiftTime, u, shiftAssignments);
+              });
+            });
+          });
+        });
+        this.populateTotalShifts();
+        this.sortSelections();
+      });
+    });
+  }
+
+  /**
+   * Adds a selection for a relevant shift and a relevant user
+   * @param shift relevant shift
+   * @param shiftTime used as a key
+   * @param user relevant user
+   * @param shiftAssignments holds assignment data for the selection.
+   */
+  addSelection(shift: Shift, shiftTime: string, user: User, shiftAssignments: ShiftAssignments): void {
+    let selection = new Selection(shiftTime, user.name);
+    let userAssignments: UserAssignments = shiftAssignments.assignments.find(userAssignments => userAssignments.name == user.name);
+    let assignedShift = userAssignments && userAssignments.assignments.find(s => s.time == shiftTime);
+    selection.isSelected = assignedShift && assignedShift.isSelected;    
+    if (shift.isSelected) {
+      this.userYesses[user.name].push(selection);
+      this.shiftYesses[shiftTime].push(selection);
+    }
+    else if (shift.isSelected === null) {
+      this.userMaybes[user.name].push(selection);
+      this.shiftMaybes[shiftTime].push(selection);
+    }
   }
 
   private populateTotalShifts(): any {
@@ -106,7 +130,7 @@ export class ProcessPollResultsComponent implements OnInit {
     });
   }
 
-  publish(): void {
+  save(publish: boolean): void {
     let userAssignments: UserAssignments[] = [];
     for (const name in this.userYesses) {
       let assignments: Shift[] = [];
@@ -118,11 +142,8 @@ export class ProcessPollResultsComponent implements OnInit {
     }
     let shiftAssignments: ShiftAssignments = { pollId: this.selectedPoll._id, assignments: userAssignments };
     console.log(shiftAssignments);
-    this.appService.publishAssignments(shiftAssignments);
-    this.snackBar.open("השיבוצים פורסמו", null, { duration: 3000, direction: "rtl" })
-  }
-
-  saveDraft() {
-    alert("saveDraft");
+    this.appService.saveAssignments(shiftAssignments, publish);
+    if (publish) this.snackBar.open("השיבוצים פורסמו", null, { duration: 3000, direction: "rtl" });
+    else this.snackBar.open("השיבוצים נשמרו כטיוטא, ולא פורסמו", null, { duration: 3000, direction: "rtl" });
   }
 }

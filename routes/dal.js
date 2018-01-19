@@ -27,7 +27,7 @@ router.post('/publish-poll', function (req, res) {
   });
 });
 
-router.post('/publish-assignments', function (req, res) {
+router.post('/save-assignments', function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
     let query = {};
     db.collection('shift-assignments').updateOne({ pollId: req.body.pollId }, req.body, { upsert: true });
@@ -53,6 +53,8 @@ router.post("/save-user-preferences", function (req, res) {
 router.get("/load-shift-assignments", (req, res) => {
   mongoClient.connect(mongodbUri, (err, db) => {
     let query = {};
+    if (req.query.publishedOnly)
+      query['isPublished'] = true
     if (req.query.pollId)
       query['pollId'] = req.query.pollId;
     db.collection('shift-assignments').findOne(query, (err, result) => {

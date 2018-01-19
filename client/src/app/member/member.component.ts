@@ -48,7 +48,7 @@ export class MemberComponent implements OnInit {
       this.userPreferences = result
       this.userNames = this.userPreferences.map(u => u.name);
     });
-    this.appService.loadShiftAssignments(this.selectedPoll._id).subscribe(assignments => this.assignments = assignments);    
+    this.appService.loadShiftAssignments(this.selectedPoll._id, true).subscribe(assignments => this.assignments = assignments);    
   }
 
   constructor(private appService: AppService, private snackBar: MatSnackBar) {

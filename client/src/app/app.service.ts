@@ -12,9 +12,10 @@ import { ShiftAssignments } from "app/models/shift-assignments";
 export class AppService {
     constructor(private http: Http) { }
 
-    loadShiftAssignments(pollId: string): Observable<ShiftAssignments> {
+    loadShiftAssignments(pollId: string, publishedOnly: boolean): Observable<ShiftAssignments> {
         let params = new URLSearchParams();
         params.set("pollId", pollId);
+        if (publishedOnly) params.set("publishedOnly", "true");
         return this.http.get('dal/load-shift-assignments', { search: params })
             .map(res => res.json())
             .catch((err: any) => {
@@ -75,8 +76,9 @@ export class AppService {
             });
     }
 
-    publishAssignments(assignments: ShiftAssignments) {
+    saveAssignments(assignments: ShiftAssignments, publish: boolean) {
         let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
-        this.http.post('dal/publish-assignments', JSON.stringify(assignments), { headers: headers }).subscribe(r => { });
+        assignments['isPublished'] = publish;
+        this.http.post('dal/save-assignments', JSON.stringify(assignments), { headers: headers }).subscribe(r => { });
     }
 }
