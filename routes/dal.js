@@ -107,7 +107,7 @@ function getShiftsByWeekday(weekday) {
     case 1: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
     case 2: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
     case 3: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
-    case 4: return [{ time: "13:00-16:00" }, { time: "16:00-19:00" }, { time: "19:00-22:00" }, { time: "21:00-00:00" }];
+    case 4: return [{ time: "18:00-21:00" }, { time: "21:00-00:00" }];
     case 5: return [{ time: "08:00-11:00" }, { time: "11:00-14:00" }, { time: "13:00-16:00" }];
     default: return [];
   }
