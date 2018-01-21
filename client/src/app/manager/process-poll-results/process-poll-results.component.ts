@@ -85,7 +85,7 @@ export class ProcessPollResultsComponent implements OnInit {
    */
   addSelection(shift: Shift, shiftTime: string, user: User, shiftAssignments: ShiftAssignments): void {
     let selection = new Selection(shiftTime, user.name);
-    let userAssignments: UserAssignments = shiftAssignments.assignments.find(userAssignments => userAssignments.name == user.name);
+    let userAssignments: UserAssignments = shiftAssignments && shiftAssignments.assignments.find(userAssignments => userAssignments.name == user.name);
     let assignedShift = userAssignments && userAssignments.assignments.find(s => s.time == shiftTime);
     selection.isSelected = assignedShift && assignedShift.isSelected;    
     if (shift.isSelected) {
