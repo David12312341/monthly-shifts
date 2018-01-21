@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoClient = require('mongodb').MongoClient;
-var mongodbUri = "mongodb://beshutaf:jerucoop@ds129442.mlab.com:29442/beshutaf-shifts-test"
+// var mongodbUri = "mongodb://beshutaf:jerucoop@ds129442.mlab.com:29442/beshutaf-shifts-test"
+var mongodbUri = "mongodb://beshutaf:jerucoop@ds211588.mlab.com:11588/beshutaf-shifts"
 
 router.get('/get-month', function (req, res) {
   res.json(genrateMonthJson(req.query.year, req.query.month));
