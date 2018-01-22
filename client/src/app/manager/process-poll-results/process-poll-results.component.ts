@@ -141,7 +141,6 @@ export class ProcessPollResultsComponent implements OnInit {
       }
     }
     let shiftAssignments: ShiftAssignments = { pollId: this.selectedPoll._id, assignments: userAssignments };
-    console.log(shiftAssignments);
     this.appService.saveAssignments(shiftAssignments, publish);
     if (publish) this.snackBar.open("השיבוצים פורסמו", null, { duration: 3000, direction: "rtl" });
     else this.snackBar.open("השיבוצים נשמרו כטיוטא, ולא פורסמו", null, { duration: 3000, direction: "rtl" });
