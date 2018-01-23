@@ -16,12 +16,10 @@ import { MatSnackBar } from "@angular/material";
   encapsulation: ViewEncapsulation.None
 })
 export class ProcessPollResultsComponent implements OnInit {
-  
+
   selectedPoll: Poll;
   polls: Poll[] = [];
   userPreferences: User[];
-  selectionYesses: Selection[] = [];
-  seletionMaybes: Selection[] = [];
   userYesses: Map<string, Selection[]> = new Map();
   userMaybes: Map<string, Selection[]> = new Map();
   shiftYesses: Map<string, Selection[]> = new Map();
@@ -47,6 +45,13 @@ export class ProcessPollResultsComponent implements OnInit {
     return parseInt(month) + 1;
   }
 
+  clearSelections(): any {
+    this.shiftYesses = new Map();
+    this.shiftMaybes = new Map();
+    this.userYesses = new Map();
+    this.userMaybes = new Map();
+  }
+
   /**
    * Get user preferences and previously saved assignments for this poll and populate relevant members.
    * @param pollId ID of selected poll
@@ -54,6 +59,7 @@ export class ProcessPollResultsComponent implements OnInit {
   populateAssignments(pollId: string): void {
     this.appService.loadShiftAssignments(pollId, false).subscribe(shiftAssignments => {
       this.appService.loadUserPreferences(pollId).subscribe(result => {
+        this.clearSelections();
         this.userPreferences = result;
         this.userPreferences.forEach(u => {
           this.userYesses[u.name] = [];
@@ -87,7 +93,7 @@ export class ProcessPollResultsComponent implements OnInit {
     let selection = new Selection(shiftTime, user.name);
     let userAssignments: UserAssignments = shiftAssignments && shiftAssignments.assignments.find(userAssignments => userAssignments.name == user.name);
     let assignedShift = userAssignments && userAssignments.assignments.find(s => s.time == shiftTime);
-    selection.isSelected = assignedShift && assignedShift.isSelected;    
+    selection.isSelected = assignedShift && assignedShift.isSelected;
     if (shift.isSelected) {
       this.userYesses[user.name].push(selection);
       this.shiftYesses[shiftTime].push(selection);
@@ -99,7 +105,7 @@ export class ProcessPollResultsComponent implements OnInit {
   }
 
   private populateTotalShifts(): any {
-    this.totalShifts.length = 0;
+    this.totalShifts = [];
     this.selectedPoll.shifts.forEach(week => week.forEach(day => {
       if (day.shifts) day.shifts.forEach(shift => {
         if (this.shiftYesses[`${day.date} ${shift.time}`].length != 0 || this.shiftMaybes[`${day.date} ${shift.time}`] != 0)
