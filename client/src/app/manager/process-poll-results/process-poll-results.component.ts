@@ -28,6 +28,7 @@ export class ProcessPollResultsComponent implements OnInit {
 
   set selectedPollId(value: string) {
     this.selectedPoll = this.polls.find(p => p._id == value);
+    this.clearSelections();    
     this.populateAssignments(value);
   }
 
@@ -59,7 +60,6 @@ export class ProcessPollResultsComponent implements OnInit {
   populateAssignments(pollId: string): void {
     this.appService.loadShiftAssignments(pollId, false).subscribe(shiftAssignments => {
       this.appService.loadUserPreferences(pollId).subscribe(result => {
-        this.clearSelections();
         this.userPreferences = result;
         this.userPreferences.forEach(u => {
           this.userYesses[u.name] = [];
