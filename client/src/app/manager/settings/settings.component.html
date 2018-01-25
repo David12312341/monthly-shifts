@@ -1,0 +1,9 @@
+<mat-spinner *ngIf="!doneLoading"></mat-spinner>
+<div *ngIf="doneLoading">
+  <mat-form-field>
+    <input class="member-name" [(ngModel)]="email" name="username" placeholder="אימייל" matInput>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary" (click)="saveSettings()">אישור</button>
+  </div>
+</div>

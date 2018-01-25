@@ -81,4 +81,18 @@ export class AppService {
         assignments['isPublished'] = publish;
         this.http.post('dal/save-assignments', JSON.stringify(assignments), { headers: headers }).subscribe(r => { });
     }
+
+    saveSettings(settings: { email: string }) {
+        let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+        this.http.post('dal/settings', JSON.stringify(settings), { headers: headers }).subscribe(r => { });
+    }
+
+    loadSettings(): Observable<any> {
+        return this.http.get('dal/settings')
+            .map(res => res.json())
+            .catch((err: any) => {
+                console.error("HTTP get failed");
+                return Promise.reject(err.message || err)
+            });
+    }
 }

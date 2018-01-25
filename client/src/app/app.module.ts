@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule, MatSnackBarModule, MatCheckboxModule, MatTableModule, MatToolbarModule, MatAutocompleteModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatTooltipModule, MatProgressSpinnerModule, MatRadioModule } from '@angular/material';
 import { RemarkDialogComponent } from './remark-dialog/remark-dialog.component';
 import { ProcessPollResultsComponent } from './manager/process-poll-results/process-poll-results.component';
+import { SettingsComponent } from './manager/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ProcessPollResultsComponent } from './manager/process-poll-results/proc
     NewPollFormComponent,
     RemarkDialogComponent,
     ProcessPollResultsComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

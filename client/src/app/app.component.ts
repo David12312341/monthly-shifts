@@ -53,6 +53,10 @@ export class AppComponent implements OnInit {
         action: () => this.screen = ScreenType.ProcessPollResults
       },
       {
+        caption: "הגדרות",
+        action: () => this.screen = ScreenType.Settings
+      },
+      {
         caption: "יציאה",
         action: () => this.isManager = false
       }

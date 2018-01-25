@@ -1,4 +1,5 @@
 var express = require('express');
+const nodemailer = require('nodemailer');
 var router = express.Router();
 var mongoClient = require('mongodb').MongoClient;
 // var mongodbUri = "mongodb://beshutaf:jerucoop@ds129442.mlab.com:29442/beshutaf-shifts-test"
@@ -29,6 +30,23 @@ router.post('/publish-poll', function (req, res) {
   });
 });
 
+router.post('/settings', function (req, res) {
+  mongoClient.connect(mongodbUri, function (err, db) {
+    db.collection('settings').updateOne({}, req.body, { upsert: true });
+    db.close();
+  });
+});
+
+router.get('/settings', (req, res) => {
+  mongoClient.connect(mongodbUri, (err, db) => {
+    let query = {};
+    db.collection('settings').findOne(query, (err, result) => {
+      res.json(result);
+      db.close();
+    });
+  });
+});
+
 router.post('/save-assignments', function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
     let query = {};
@@ -49,6 +67,7 @@ router.post("/save-user-preferences", function (req, res) {
         upsert: true
       });
     db.close();
+    sendMail();
   });
 });
 
@@ -60,9 +79,9 @@ router.get("/load-shift-assignments", (req, res) => {
     if (req.query.pollId)
       query['pollId'] = req.query.pollId;
     db.collection('shift-assignments').findOne(query, (err, result) => {
-        res.json(result);
-        db.close();
-      });
+      res.json(result);
+      db.close();
+    });
   });
 });
 
@@ -113,6 +132,24 @@ function getShiftsByWeekday(weekday) {
     case 5: return [{ time: "08:00-11:00" }, { time: "11:00-14:00" }, { time: "13:00-16:00" }];
     default: return [];
   }
+}
+
+function sendMail() {
+  mongoClient.connect(mongodbUri, (err, db) => {
+    let query = {};
+    db.collection('settings').findOne(query, (err, result) => {
+      if (result.email) {
+        nodemailer.mail({
+          from: "Fred Foo ✔ <foo@blurdybloop.com>", // sender address
+          to: result.email, // list of receivers
+          subject: "Hello ✔", // Subject line
+          text: "Hello world ✔", // plaintext body
+          html: "<b>Hello world ✔</b>" // html body
+      });
+      }
+      db.close();
+    });
+  });
 }
 
 module.exports = router;

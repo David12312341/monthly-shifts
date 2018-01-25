@@ -12,6 +12,7 @@
     "express": "~4.15.2",
     "mongodb": "^2.2.28",
     "morgan": "~1.8.1",
+    "nodemailer": "0.7.1",
     "pug": "~2.0.0-beta11",
     "serve-favicon": "~2.4.2"
   },
