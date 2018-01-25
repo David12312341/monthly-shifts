@@ -143,7 +143,7 @@ function sendMail(username, pollName) {
           from: "קואופרטיב בשותף <no-reply@beshutaf.org>", // sender address
           to: result.email, // list of receivers
           subject: "מישהו מילא את אחד הסקרים", // Subject line
-          text: `המשתמש ${username} מילא את הסקר ${pollName}.`
+          html: `המשתמש <b>${username}</b> מילא את הסקר <b>${pollName}</b>.`
       });
       }
       db.close();
