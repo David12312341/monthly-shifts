@@ -67,7 +67,7 @@ router.post("/save-user-preferences", function (req, res) {
         upsert: true
       });
     db.close();
-    sendMail();
+    sendMail(req.body.name, req.body.preferences.name);
   });
 });
 
@@ -134,7 +134,7 @@ function getShiftsByWeekday(weekday) {
   }
 }
 
-function sendMail() {
+function sendMail(username, pollName) {
   mongoClient.connect(mongodbUri, (err, db) => {
     let query = {};
     db.collection('settings').findOne(query, (err, result) => {
@@ -142,9 +142,8 @@ function sendMail() {
         nodemailer.mail({
           from: "קואופרטיב בשותף <no-reply@beshutaf.org>", // sender address
           to: result.email, // list of receivers
-          subject: "מישהו מילא את המשמרות", // Subject line
-          text: "Hello world ✔", // plaintext body
-          html: "<b>Hello world ✔</b>" // html body
+          subject: "מישהו מילא את אחד הסקרים", // Subject line
+          text: `המשתמש ${username} מילא את הסקר ${pollName}.`
       });
       }
       db.close();
