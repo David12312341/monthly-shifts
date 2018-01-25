@@ -140,9 +140,9 @@ function sendMail() {
     db.collection('settings').findOne(query, (err, result) => {
       if (result.email) {
         nodemailer.mail({
-          from: "Fred Foo ✔ <foo@blurdybloop.com>", // sender address
+          from: "קואופרטיב בשותף <no-reply@beshutaf.org>", // sender address
           to: result.email, // list of receivers
-          subject: "Hello ✔", // Subject line
+          subject: "מישהו מילא את המשמרות", // Subject line
           text: "Hello world ✔", // plaintext body
           html: "<b>Hello world ✔</b>" // html body
       });
