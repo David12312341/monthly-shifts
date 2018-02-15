@@ -2,6 +2,7 @@ var express = require('express');
 const nodemailer = require('nodemailer');
 var router = express.Router();
 var mongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 // var mongodbUri = "mongodb://beshutaf:jerucoop@ds129442.mlab.com:29442/beshutaf-shifts-test"
 var mongodbUri = "mongodb://beshutaf:jerucoop@ds211588.mlab.com:11588/beshutaf-shifts"
 // var mongodbUri = "mongodb://girush:girushifts@ds111608.mlab.com:11608/girush-shifts"
@@ -16,7 +17,9 @@ router.get('/new', function (req, res) {
 
 router.get('/get-polls', (req, res) => {
   mongoClient.connect(mongodbUri, (err, db) => {
-    db.collection('polls').find()
+    let query = {};
+    if (req.query.notArchived == "true") query = { isArchived: { $ne: true } };
+    db.collection('polls').find(query)
       .toArray((err, docs) => {
         res.json(docs);
       })
@@ -33,6 +36,13 @@ router.post('/publish-poll', function (req, res) {
 router.post('/settings', function (req, res) {
   mongoClient.connect(mongodbUri, function (err, db) {
     db.collection('settings').updateOne({}, req.body, { upsert: true });
+    db.close();
+  });
+});
+
+router.post('/save-polls-archive', function (req, res) {
+  mongoClient.connect(mongodbUri, function (err, db) {
+    req.body.forEach(poll => db.collection('polls').updateOne({ _id: ObjectID(poll._id) }, { $set: { isArchived: poll.isArchived } }));
     db.close();
   });
 });
@@ -144,7 +154,7 @@ function sendMail(username, pollName) {
           to: result.email, // list of receivers
           subject: "מישהו מילא את אחד הסקרים", // Subject line
           html: `המשתמש <b>${username}</b> מילא את הסקר <b>${pollName}</b>.`
-      });
+        });
       }
       db.close();
     });

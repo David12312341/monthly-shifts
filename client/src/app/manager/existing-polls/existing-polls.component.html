@@ -1,9 +1,9 @@
 <h2>בחר את הסקרים שברצונך לשלוח לארכיון</h2>
 <div *ngIf="polls != null && polls.length != 0">
-  <mat-selection-list>
-    <mat-list-option *ngFor="let poll of polls" [selected]="poll.isArchived">
-      {{poll.name}}
+  <mat-selection-list #pollsList>
+    <mat-list-option *ngFor="let poll of polls" [selected]="poll.isArchived" [value]="poll._id">
+      {{getFullPollName(poll)}}
     </mat-list-option>
   </mat-selection-list>
-  <button mat-raised-button id="save" color="primary" type="button" (click)="save()">שמירה</button>
+  <button mat-raised-button id="save" color="primary" type="button" (click)="save(pollsList)">שמירה</button>
 </div>

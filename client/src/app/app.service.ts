@@ -39,9 +39,11 @@ export class AppService {
             });
     }
 
-    loadPolls(): Observable<Poll[]> {
+    loadPolls(notArchived: boolean = true): Observable<Poll[]> {
+        let params = new URLSearchParams();
+        params.set("notArchived", String(notArchived));
         return this.http
-            .get('/dal/get-polls')
+            .get('/dal/get-polls', { search: params })
             .map(res => res.json())
             .catch((err: any) => {
                 console.error("HTTP get failed");
@@ -95,5 +97,10 @@ export class AppService {
                 console.error("HTTP get failed");
                 return Promise.reject(err.message || err)
             });
+    }
+
+    savePollsArchive(polls: Poll[]): void {
+        let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+        this.http.post('dal/save-polls-archive', JSON.stringify(polls), { headers: headers }).subscribe(r => { });
     }
 }
