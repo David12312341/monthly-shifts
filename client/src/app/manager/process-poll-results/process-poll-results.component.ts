@@ -34,7 +34,7 @@ export class ProcessPollResultsComponent implements OnInit {
 
   constructor(private appService: AppService, private snackBar: MatSnackBar) {
     this.appService.loadPolls()
-      .subscribe((polls: Observable<any>) => {
+      .subscribe((polls: Poll[]) => {
         polls.forEach(p => this.polls.push(p));
       });
   }

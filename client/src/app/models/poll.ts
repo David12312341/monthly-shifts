@@ -5,5 +5,6 @@ export class Poll {
     public month: string;
     public year: string;
     public shifts: Week[]
+    public isArchived: boolean;
     public _id;
 }

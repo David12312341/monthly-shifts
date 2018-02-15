@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { ShiftAssignments } from "app/models/shift-assignments";
+import { Poll } from "app/models/poll";
 
 @Injectable()
 export class AppService {
@@ -38,7 +39,7 @@ export class AppService {
             });
     }
 
-    loadPolls(): Observable<any> {
+    loadPolls(): Observable<Poll[]> {
         return this.http
             .get('/dal/get-polls')
             .map(res => res.json())
