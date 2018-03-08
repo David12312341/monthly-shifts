@@ -6,3 +6,6 @@ div.container {
     margin:auto;
     padding-bottom: 32px;
 }
+@media screen and (max-width: 480px) {
+    padding-right: 32px;
+}
