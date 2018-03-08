@@ -15,3 +15,14 @@ td .mat-form-field {
     width: 80%;
     text-align: center;
 }
+@media screen and (max-width: 480px) {
+    th {
+        display: none;
+    }
+    tr {
+        display: table;
+    }
+    td {
+        display: table-row;
+    }
+}
