@@ -23,6 +23,6 @@ td .mat-form-field {
         display: table;
     }
     td {
-        display: table-cell;
+        display: table-row;
     }
 }

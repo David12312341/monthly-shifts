@@ -7,5 +7,7 @@ div.container {
     padding-bottom: 32px;
 }
 @media screen and (max-width: 480px) {
-    padding-right: 32px;
+    div.container {
+        padding-right: 32px;
+    }
 }
