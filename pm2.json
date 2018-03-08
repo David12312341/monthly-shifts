@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "beshutaf-shifts",
+            "script": "npm",
+            "args" : "start"
+        }
+    ]
+}
