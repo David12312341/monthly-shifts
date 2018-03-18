@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AppService } from "app/app.service";
 import { User } from "app/models/user";
+import { SortPreferencesBy } from "app/models/sort-preferences-by";
 import { Observable } from "rxjs/Observable";
 import { Poll } from "app/models/poll";
 import { Selection } from "app/models/selection";
@@ -8,6 +9,7 @@ import { UserAssignments } from "app/models/user-assignments";
 import { Shift } from "app/models/shift";
 import { ShiftAssignments } from "app/models/shift-assignments";
 import { MatSnackBar } from "@angular/material";
+
 
 @Component({
   selector: 'process-poll-results',
@@ -25,6 +27,8 @@ export class ProcessPollResultsComponent implements OnInit {
   shiftYesses: Map<string, Selection[]> = new Map();
   shiftMaybes: Map<string, Selection[]> = new Map();
   totalShifts: any[] = [];
+  sortBy: SortPreferencesBy = SortPreferencesBy.Amount;
+  SortPreferencesBy = SortPreferencesBy;
 
   set selectedPollId(value: string) {
     this.selectedPoll = this.polls.find(p => p._id == value);
