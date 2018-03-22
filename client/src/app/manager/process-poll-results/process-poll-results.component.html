@@ -6,6 +6,13 @@
     </mat-select>
   </mat-form-field>
   <div *ngIf="selectedPoll != null">
+    <div>
+      <h3>מיין לפי:</h3>
+      <mat-radio-group [(ngModel)]="sortBy" (change)="sortSelections()">
+        <mat-radio-button [value]="SortPreferencesBy.Amount">כמות משתבצים</mat-radio-button>
+        <mat-radio-button [value]="SortPreferencesBy.Date">תאריך</mat-radio-button>
+      </mat-radio-group>
+    </div>
     <div class="table-container">
       <h2>משתבצים</h2>
       <table>
@@ -19,12 +26,14 @@
             <td>{{user.name}}</td>
             <td>
               <div *ngFor="let selection of userYesses[user.name]">
-                <mat-checkbox class="option-checkbox" dir="ltr" labelPosition="before" [(ngModel)]="selection.isSelected" (change)="sortSelections()" name="usc">{{selection.option}}</mat-checkbox>
+                <mat-checkbox class="option-checkbox" dir="ltr" labelPosition="before" [(ngModel)]="selection.isSelected" (change)="sortSelections()"
+                  name="usc">{{selection.option}}</mat-checkbox>
               </div>
             </td>
             <td>
               <div *ngFor="let selection of userMaybes[user.name]">
-                <mat-checkbox class="option-checkbox" dir="ltr" labelPosition="before" [(ngModel)]="selection.isSelected" (change)="sortSelections()" name="umc">{{selection.option}}</mat-checkbox>
+                <mat-checkbox class="option-checkbox" dir="ltr" labelPosition="before" [(ngModel)]="selection.isSelected" (change)="sortSelections()"
+                  name="umc">{{selection.option}}</mat-checkbox>
               </div>
             </td>
           </tr>
@@ -60,5 +69,5 @@
         <button mat-raised-button id="submit" color="primary" type="button" (click)="save(true)">פרסום</button>
       </div>
     </div>
-    </div>
+  </div>
 </div>
