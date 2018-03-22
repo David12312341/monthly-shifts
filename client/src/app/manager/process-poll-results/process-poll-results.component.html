@@ -8,7 +8,7 @@
   <div *ngIf="selectedPoll != null">
     <div>
       <h3>מיין לפי:</h3>
-      <mat-radio-group [(ngModel)]="sortBy">
+      <mat-radio-group [(ngModel)]="sortBy" (change)="sortSelections()">
         <mat-radio-button [value]="SortPreferencesBy.Amount">כמות משתבצים</mat-radio-button>
         <mat-radio-button [value]="SortPreferencesBy.Date">תאריך</mat-radio-button>
       </mat-radio-group>

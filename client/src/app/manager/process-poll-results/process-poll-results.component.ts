@@ -32,7 +32,7 @@ export class ProcessPollResultsComponent implements OnInit {
 
   set selectedPollId(value: string) {
     this.selectedPoll = this.polls.find(p => p._id == value);
-    this.clearSelections();    
+    this.clearSelections();
     this.populateAssignments(value);
   }
 
@@ -110,16 +110,26 @@ export class ProcessPollResultsComponent implements OnInit {
 
   private populateTotalShifts(): any {
     this.totalShifts = [];
+    let index = 0;
     this.selectedPoll.shifts.forEach(week => week.forEach(day => {
       if (day.shifts) day.shifts.forEach(shift => {
         if (this.shiftYesses[`${day.date} ${shift.time}`].length != 0 || this.shiftMaybes[`${day.date} ${shift.time}`] != 0)
-          this.totalShifts.push({ time: `${day.date} ${shift.time}`, assignees: [] });
+          this.totalShifts.push({
+            time: `${day.date} ${shift.time}`,
+            assignees: [],
+            index: index++
+          });
       });
     }));
   }
 
   sortSelections(): void {
     if (!this.userPreferences) return;
+    this.sortUsers();
+    this.sortShifts();
+  }
+
+  sortUsers(): void {
     this.userPreferences = this.userPreferences.sort((u1, u2) => {
       let u1Yesses: number = 0;
       let u2Yesses: number = 0;
@@ -129,6 +139,17 @@ export class ProcessPollResultsComponent implements OnInit {
       u2.preferences.shifts.forEach(week => week.forEach(day => u2Yesses += day.shifts ? day.shifts.filter(shift => shift.isSelected).length : 0));
       return u1Yesses - u2Yesses;
     });
+  }
+
+  sortShifts(): void {
+    if (this.sortBy == SortPreferencesBy.Date)
+      this.totalShifts = this.totalShifts.sort((s1, s2) => s1.index - s2.index);
+    else {
+      this.sortShiftsByUserAmount();
+    }
+  }
+
+  sortShiftsByUserAmount(): void {
     this.totalShifts = this.totalShifts.sort((s1, s2) => {
       let s1Yesses: number = 0;
       let s2Yesses: number = 0;
