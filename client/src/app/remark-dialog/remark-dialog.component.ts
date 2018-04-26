@@ -8,6 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 })
 export class RemarkDialogComponent implements OnInit {
 
+  selectedRemark: string;
+
   constructor(public dialogRef: MatDialogRef<RemarkDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 

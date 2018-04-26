@@ -1,9 +1,9 @@
-<mat-toolbar color="primary" class="mat-elevation-z6">
+<mat-toolbar color="primary" class="mat-elevation-z6 mat-typography">
     <span>סידור משמרות</span>
     <span class="sapcer"></span>
     <a *ngFor="let item of navButtons" mat-button href="javascript:void(0)" (click)="item.action()">{{item.caption}}</a>
 </mat-toolbar>
-<div class="container">
+<div class="container mat-typography">
     <app-manager *ngIf="isManager" [screen]="screen"></app-manager>
     <app-member *ngIf="!isManager"></app-member>
 </div>

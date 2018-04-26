@@ -15,6 +15,9 @@ td {
     margin: 16px;   
     width:40%;
 }
+.table-container:last-child {
+    float: left;
+}
 .submit-container {
     display: block;
     float: left;
