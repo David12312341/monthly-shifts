@@ -1,12 +1,12 @@
 <table class="highlight" style="width:100%">
   <thead>
     <tr>
-      <th *ngFor="let i of ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי']">{{i}}</th>
+      <th *ngFor="let i of ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת']">{{i}}</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let week of poll">
-      <td *ngFor="let day of week" style="width:16.667%">
+      <td *ngFor="let day of week" style="width:14.2%">
         <h2>{{day.date}}</h2>
         <div *ngFor="let shift of day.shifts">
           <div *ngIf="managerMode" matTooltip="{{shift.remark}}">

@@ -111,7 +111,7 @@ router.get("/load-user-preferences", (req, res) => {
 function genrateMonthJson(year, month) {
   let result = [];
   let firstOfMonth = new Date(year, month, 1);
-  if (firstOfMonth.getDay() !== 0 && firstOfMonth.getDay() !== 6) {
+  if (firstOfMonth.getDay() !== 0) {
     result.push([]);
     for (var i = 0; i < firstOfMonth.getDay(); i++) {
       result[0].push({});
@@ -120,8 +120,8 @@ function genrateMonthJson(year, month) {
   for (var i = 1; i <= new Date(year, month + 1, 0).getDate(); i++) {
     let current = new Date(year, month, i);
     let weekday = current.getDay();
-    if (weekday === 6) continue;
-    else if (weekday === 0) {
+    // if (weekday === 6) continue;
+    if (weekday === 0) {
       result.push([]);
     }
     result[result.length - 1].push({
@@ -140,6 +140,7 @@ function getShiftsByWeekday(weekday) {
     case 3: return [{ time: "16:00-19:00" }, { time: "19:00-22:00" }];
     case 4: return [{ time: "18:00-21:00" }, { time: "21:00-00:00" }];
     case 5: return [{ time: "08:00-11:00" }, { time: "11:00-14:00" }, { time: "13:00-16:00" }];
+    case 6: return [{ time: "08:00-11:00" }, { time: "11:00-14:00" }, { time: "13:00-16:00" }]
     default: return [];
   }
 }
